@@ -1,0 +1,7 @@
+<?php
+
+function wiredpea_form_alter(&$form, &$form_state, &$form_id) {
+}
+
+function _theme_customize_comment_form(&$form) {
+}

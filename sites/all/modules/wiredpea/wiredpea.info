@@ -1,0 +1,4 @@
+name = WiredPea
+description = WiredPea cunstom functions
+
+core = 7.x

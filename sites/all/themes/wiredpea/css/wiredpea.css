@@ -1,0 +1,49 @@
+body {
+  font: 15px Verdana, Helvetica, Arial, sans-serif;
+  line-height: 1.625em;
+}
+
+#block-automatic-backlinks-linksdisplay {
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#block-automatic-backlinks-linksdisplay a {
+  display: block;
+}
+
+.geshifilter pre, span.geshifilter code {
+  font-size: 1.071em;
+}
+
+.filter-wrapper {
+  display: none;
+}
+
+.view-testimonial {
+  font-size: 1.2em;
+  font-style: italic;
+}
+
+.view-testimonial .views-field-title {
+  font-weight: bold;
+  font-style: normal;
+}
+
+.aggregator-author {
+  font-weight: bold;
+}
+
+.aggregator-title {
+  font-weight: bold;
+}
+
+.view-friends .views-row {
+  border-bottom: 1px dashed #333;
+  margin-bottom: 5px;
+}
+
+.sumome-control {
+  background: #07c62a;
+}
