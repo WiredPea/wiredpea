@@ -1,0 +1,59 @@
+$primaryColor: #409818;
+$secondaryColor: #043023;
+
+@font-face {
+  font-family: harabara;
+  src: url('../font/Harabara.eot'); /* IE9 compat mode */
+  src: url('../font/Harabara.eot?#iefix') format('embedded-opentype'), /* IE6 - IE8 compat modes */
+       url('../font/Harabara.woff') format('woff'), /* Pretty mordern browsers */
+       url('../font/Harabara.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../font/Harabara.svg') format('svg'); /* Legacy iOS */
+}
+
+#header {
+  margin: auto;
+  text-align: center;
+
+  a.header__logo {
+    float: none;
+  }
+}
+
+h1, h2 {
+  font-family: harabara, Verdana, Tahoma, "DejaVu Sans", sans-serif;
+    letter-spacing: 0.1rem;
+}
+
+a {
+  color: $primaryColor;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $secondaryColor;
+  text-decoration: underline;
+}
+
+article {
+  border-bottom: 1px dotted #999999;
+  padding-bottom: 5px;
+
+  header {
+    margin-bottom: 1rem;
+    margin-top: 1.25rem;
+
+    .submitted {
+      margin: 0;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: #999;
+    }
+
+    h2 {
+      line-height: 1.1rem;
+    }
+  }
+  p {
+    margin: 0;
+  }
+}

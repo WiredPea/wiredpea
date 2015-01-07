@@ -1,49 +1,60 @@
-body {
-  font: 15px Verdana, Helvetica, Arial, sans-serif;
-  line-height: 1.625em;
+@font-face {
+  font-family: harabara;
+  src: url("../font/Harabara.eot");
+  /* IE9 compat mode */
+  src: url("../font/Harabara.eot?#iefix") format("embedded-opentype"), url("../font/Harabara.woff") format("woff"), url("../font/Harabara.ttf") format("truetype"), url("../font/Harabara.svg") format("svg");
+  /* Legacy iOS */
+}
+/* line 13, ../sass/wiredpea.scss */
+#header {
+  margin: auto;
+  text-align: center;
+}
+/* line 17, ../sass/wiredpea.scss */
+#header a.header__logo {
+  float: none;
 }
 
-#block-automatic-backlinks-linksdisplay {
-  border: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
+/* line 22, ../sass/wiredpea.scss */
+h1, h2 {
+  font-family: harabara, Verdana, Tahoma, "DejaVu Sans", sans-serif;
+  letter-spacing: 0.1rem;
 }
 
-#block-automatic-backlinks-linksdisplay a {
-  display: block;
+/* line 27, ../sass/wiredpea.scss */
+a {
+  color: #409818;
+  text-decoration: none;
 }
 
-.geshifilter pre, span.geshifilter code {
-  font-size: 1.071em;
+/* line 32, ../sass/wiredpea.scss */
+a:hover {
+  color: #043023;
+  text-decoration: underline;
 }
 
-.filter-wrapper {
-  display: none;
+/* line 37, ../sass/wiredpea.scss */
+article {
+  border-bottom: 1px dotted #999999;
+  padding-bottom: 5px;
 }
-
-.view-testimonial {
-  font-size: 1.2em;
-  font-style: italic;
+/* line 41, ../sass/wiredpea.scss */
+article header {
+  margin-bottom: 1rem;
+  margin-top: 1.25rem;
 }
-
-.view-testimonial .views-field-title {
-  font-weight: bold;
-  font-style: normal;
+/* line 45, ../sass/wiredpea.scss */
+article header .submitted {
+  margin: 0;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #999;
 }
-
-.aggregator-author {
-  font-weight: bold;
+/* line 52, ../sass/wiredpea.scss */
+article header h2 {
+  line-height: 1.1rem;
 }
-
-.aggregator-title {
-  font-weight: bold;
-}
-
-.view-friends .views-row {
-  border-bottom: 1px dashed #333;
-  margin-bottom: 5px;
-}
-
-.sumome-control {
-  background: #07c62a;
+/* line 56, ../sass/wiredpea.scss */
+article p {
+  margin: 0;
 }
