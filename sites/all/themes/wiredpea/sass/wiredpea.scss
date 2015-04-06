@@ -10,15 +10,6 @@ $secondaryColor: #043023;
        url('../font/Harabara.svg') format('svg'); /* Legacy iOS */
 }
 
-#header {
-  margin: auto;
-  text-align: center;
-
-  a.header__logo {
-    float: none;
-  }
-}
-
 h1, h2 {
   font-family: harabara, Verdana, Tahoma, "DejaVu Sans", sans-serif;
     letter-spacing: 0.1rem;
@@ -42,18 +33,16 @@ article {
     margin-bottom: 1rem;
     margin-top: 1.25rem;
 
-    .submitted {
-      margin: 0;
-      margin-top: 0.5rem;
-      font-size: 0.75rem;
-      color: #999;
-    }
-
     h2 {
       line-height: 1.1rem;
     }
   }
   p {
     margin: 0;
+    white-space: normal;
+  }
+
+  img {
+    padding: 0px 10px 5px 0px;
   }
 }
