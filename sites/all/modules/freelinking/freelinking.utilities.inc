@@ -1,31 +1,31 @@
 <?php
 
 /**
- * Freelinking 3 Utilities
+ * Freelinking ver. 3 Utilities
  *
  * @file
- *  Provides toolkit functions for Freelinking plugin developers.
+ * Provides toolkit functions for Freelinking plugin developers.
  */
 
 /**
  * Process the target text into a link with the specified plugin.
  *
  * @param $plugin
- *   The name of the plugin to be used to render the link.
+ * The name of the plugin to be used to render the link.
  *
  * @param $target
- *   The target text extracted from the freelink. Array.
+ * The target text extracted from the freelink. Array.
  *
  * @param $format
- *   The format id currently invoking the Freelinking filter. Might be used in
+ * The format id currently invoking the Freelinking filter. Might be used in
  * the future to tweak plugin behavior.
  *
  * @param $rendered
- *   Boolean value. If true, link will be returned as rendered HTML. If false,
+ * Boolean value. If true, link will be returned as rendered HTML. If false,
  * link will be returned as arguments for l().
  *
  * @return
- *   An array as per the arguments of l() or a string of HTML markup.
+ * An array as per the arguments of l() or a string of HTML markup.
  *
  * @see l()
  */
@@ -40,13 +40,9 @@ function freelinking_get_freelink($plugin, $target, $format = 'all', $rendered =
     if ($link['failover'] == 'error') {
       return theme('freelink_error', array('plugin' => $plugin, 'message' => $link['message']));
     }
-    if ($link['failover'] == 'none') {
+    if ($link['failover'] == 'NONE') {
       return FALSE;
     }
-  }
-  if (isset($link['error'])) {
-    $message = ('none' == $plugin) ? t('Missing plugin indicator') : $link['error'];
-    return theme('freelink_error', array('plugin' => $plugin, 'message' => $message));
   }
   
   if (function_exists('theme_freelink_' . $plugin)) {
@@ -69,14 +65,15 @@ function freelinking_get_freelink($plugin, $target, $format = 'all', $rendered =
  * the plugins might be better.
  *
  * @param $format
- *   The Text Format ID of the currently processed piece of text. Allows
+ * The Text Format ID of the currently processed piece of text. Allows
  * format-specific plugin overrides such as disabling certain plugins in a given
  * format. The default 'all' refers to the plugins as provided by hook_freelinking().
  *
  * @param $reset
- *   (Default: FALSE) Reset the static cache.
+ * (Default: FALSE) Reset the static cache.
+ *
  * @return
- *   An array of all plugins. Each plugin is itself an array.
+ * An array of all plugins. Each plugin is itself an array.
  *
  * @see PLUGINS.txt
  */
@@ -100,10 +97,8 @@ function freelinking_get_plugins($format = 'all', $reset = FALSE) {
             array('!plugin' => $name), WATCHDOG_WARNING);
       } // end if
 
-      // Set "enabled" by format when explicitly set in format configuration..
-      $plugin_enabled = variable_get(
-        'freelinking_' . $name . '_enabled_format_' . $format, ''
-      );
+      // Set "enabled" by format when explicitly set in format configuration.
+      $plugin_enabled = variable_get('freelinking_' . $name . '_enabled_format_' . $format, '');
       if ($plugin_enabled) {
         $plugin['enabled'] = $plugin_enabled;
       }
@@ -113,7 +108,7 @@ function freelinking_get_plugins($format = 'all', $reset = FALSE) {
         $plugin['#weight'] = $plugin['weight'];
         unset($plugin['weight']);
       }
-      // Set explicit defaults.
+      // Set defaults (will not overwrite key already set).
       $plugin += array(
         'enabled' => TRUE,
         'html' => TRUE,
@@ -134,16 +129,20 @@ function freelinking_get_plugins($format = 'all', $reset = FALSE) {
  *
  * Attempts to use description metatag, truncated to 200 characters.
  *
+ * Legacy - D6 only.  D7 use
+ * https://www.drupal.org/project/metatag
+ *
  * @param $type
- *   Type of the Drupal object- such as node, comment, block.
+ * Type of the Drupal object- such as node, comment, block.
  *
  * @param $id
- *   ID of the Drupal object. Useful for querying.
+ * ID of the Drupal object. Useful for querying.
  */
+ /*
 function freelinking_internal_tooltip($type, $id) {
   switch ($type) {
     case 'node':
-      if (module_exists('nodewords')) {
+      //if (module_exists('nodewords')) {
         if (function_exists('nodewords_get_tags')) {
           $metatags = nodewords_get_tags('node', $id);
           $description = check_url($metatags['description']);
@@ -153,6 +152,7 @@ function freelinking_internal_tooltip($type, $id) {
       break;
   }
 }
+*/
 
 /**
  * Get a configuration value for the current text being processed.
@@ -162,10 +162,10 @@ function freelinking_internal_tooltip($type, $id) {
  * every plugin.
  *
  * @param $name
- *   Get the setting from those tracked in freelinking_set_conf().
+ * Get the setting from those tracked in freelinking_set_conf().
  *
  * @return
- *   A string of the value.
+ * A string of the value.
  *
  * @see freelinking_set_conf()
  */
@@ -178,13 +178,13 @@ function freelinking_get_conf($name) {
  * Format-specific before Freelinking before Drupal-wide.
  *
  * @param $name
- *   Set the named setting. Examples:
- *   - 'cache': boolean. True indicates the filter cache should be turned on.
- *   - 'default_match': String. Mode of default syntax for freelinking.
+ * Set the named setting. Examples:
+ * - 'cache': boolean. True indicates the filter cache should be turned on.
+ * - 'default_match': String. Mode of default syntax for freelinking.
  *
  * @param $format
- *   Calculate the setting for the specified format. If the format is not specified,
- *   will return the value from memory without calculating.
+ * Calculate the setting for the specified format. If the format is not specified,
+ * will return the value from memory without calculating.
  *
  * @return
  *   String of the computed value.

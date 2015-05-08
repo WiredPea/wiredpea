@@ -19,7 +19,7 @@ function freelinking_settings($form, &$form_state) {
   }
 
   asort($available_plugins);
-  $available_plugins = array_merge(array('none' => '-None-'), $available_plugins);
+  $available_plugins = array_merge(array('NONE' => t('-None-')), $available_plugins);
   // set the default plugin
   $form['freelinking_default'] = array(
     '#title' => t('Plugin to use when not indicated in the freelink'),
@@ -27,7 +27,7 @@ function freelinking_settings($form, &$form_state) {
     '#multiple' => FALSE,
     '#options' => $available_plugins,
     '#default_value' => variable_get('freelinking_default', 'nodetitle'),
-    '#description' => t('Default plugin to use when no indicator is specified. "Nodetitle" mimics previous versions of Freelinking.'),
+    '#description' => t('Default plugin to use when no indicator is specified. “Nodetitle” mimics previous versions of Freelinking.'),
   );
 
   $syntax['double_bracket'] = t('Standard') . ' - [[plugin:target|Title]]';
@@ -63,6 +63,12 @@ function freelinking_settings($form, &$form_state) {
     '#description' => $disable_cache ?
       t('Caching cannot be enabled because you have enabled modules defining node access restrictions.') :
       t('The cache may not be enabled even if this box is checked.'),
+  );
+  $form['freelinking_external_http_request'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Do not poll the URL for title and availability'),
+    '#default_value' => variable_get('freelinking_external_http_request', FALSE),
+    '#description' => t('Tick to not poll the URL (faster).  Will show URL, nid, or short name instead of title.  '),
   );
 
   // loop through plugin settings functions, adding a fieldset for each
@@ -110,12 +116,12 @@ function _freelinking_failover_form(&$form, $plugin_name, $plugin, $setting_name
     foreach ($plugin['failover'] as $option) {
       $options[$option] = t('Use plugin !plugin', array('!plugin' => $option));
     }
-    $options = array_merge($options, array('error' => t('Error Message'), 'none' => t('Do Nothing')));
+    $options = array_merge($options, array('error' => t('Error Message'), 'NONE' => t('Do Nothing')));
     $form[$plugin_name]['settings'][$setting_name] = array(
       '#title' => t('Plugin Fallback Action'),
       '#type' => 'select',
       '#options' => $options,
-      '#default_value' => variable_get($setting_name, 'none'),
+      '#default_value' => variable_get($setting_name, 'NONE'),
     );
   }
   elseif (isset($plugin['failover'])) {
@@ -128,15 +134,3 @@ function _freelinking_failover_form(&$form, $plugin_name, $plugin, $setting_name
     );
   }
 }
-
-/**
- * Implements hook_form_FORM_ID_alter().
- * Used to add Vertical Tabs enhancement to admin page
- */
-function freelinking_form_freelinking_settings_alter(&$form, &$form_state) {
-  if (module_exists('vertical_tabs') &&
-    function_exists('vertical_tabs_add_vertical_tabs')) {
-    vertical_tabs_add_vertical_tabs($form);
-  }
-}
-

@@ -15,30 +15,9 @@ require DRUPAL_ROOT . '/' . drupal_get_path('module', 'freelinking_prepopulate')
 * Implements hook_help().
 */
 function freelinking_prepopulate_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#freelinking_prepopulate':
-      $path = dirname(__FILE__) . '/README.md';
-      if (file_exists($path)) {
-        $readme = file_get_contents($path);
-      }
-      if (!isset($readme)) {
-        return NULL;
-      }
-      if (module_exists('markdown')) {
-        $filters = module_invoke('markdown', 'filter_info');
-        $info = $filters['filter_markdown'];
-        if (function_exists($info['process callback'])) {
-          $function = $info['process callback'];
-          $output = filter_xss_admin($function($readme, NULL));
-        }
-        else {
-          $output = '<pre>' . check_plain($readme) . '</pre>';
-        }
-      }
-      else {
-        $output = '<pre>' . check_plain($readme) . '</pre>';
-      }
-      return $output;
+  if ($path == 'admin/help#freelinking_prepopulate') {
+    return '<p>' . t('This module provides plugins for Freelinking to prepopulate node create.') . '</p>' .
+      '<p>' . advanced_help_hint_docs('freelinking_prepopulate', NULL, TRUE) . '</p>';
   }
 }
 
@@ -89,7 +68,7 @@ function freelinking_prepopulate_node_callback($target, $plugin) {
   $url = 'node/add/' . str_replace('_', '-', $node_type);
   $title = $target['text'] ? $target['text'] : $target['dest'];
   // This title is default for createnode, anything else (such as target['title']) will override it.
-  $query['edit[title]'] = check_plain($target['dest']);
+  $query['edit[title]'] = $target['dest'];
 
   // Use arguments targeted for Prepopulate or get values from current node/page.
   if (isset($target['other']['prepopulate']) && is_array($target['other']['prepopulate'])) {

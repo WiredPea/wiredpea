@@ -10,7 +10,7 @@ $freelinking['search'] = array(
   'indicator' => '/^search$/',
   'translate' => array(' ' => '+'),
   'callback' => 'freelinking_search_callback',
-  'tip' => t('Run a local search for the specified terms.'),
+  'tip' => t('Search this site for content like “%dest”.'),
 );
 
 $freelinking['google'] = array(
@@ -45,7 +45,7 @@ function freelinking_search_callback($target, $plugin) {
   $link[0] = $target['text'] ? $target['text'] : $target['target'];
   $link[1] = 'search/node/' . $target['dest'];
   $link[2]['attributes']['title'] =
-    t('Search this site for content like "%dest"', array('%dest' => $target['target']));
+    t($plugin['tip'], array('%dest' => $target['target']));
   return $link;
 }
 
@@ -82,7 +82,7 @@ function freelinking_google_callback($target, $plugin) {
     $title = $target['text'];
   }
   else {
-    $title = 'Google Search "' . $target['dest'] . '"';
+    $title = 'Google Search “' . $target['dest'] . '”';
   }
 
   $link = array(check_plain($title), 'http://www.google.com/search', array(
@@ -92,7 +92,7 @@ function freelinking_google_callback($target, $plugin) {
       ),
       'external' => TRUE,
       'attributes' => array(
-        'title' => t('Search Google for content like "%dest"',
+        'title' => t('Search Google for content like “%dest”',
         array('%dest' => $target['dest'])),
       ),
     ));

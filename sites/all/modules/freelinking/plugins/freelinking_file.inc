@@ -8,6 +8,7 @@ $freelinking['file'] = array(
   'indicator' => '/^file$/i',
   'callback' => 'freelinking_file_file_callback',
   'settings' => 'freelinking_file_file_settings',
+  'tip' => t('Click to view a local file.'),
 );
 
 /**
@@ -27,11 +28,10 @@ function freelinking_file_file_callback($target, $plugin) {
     $path = variable_get('freelinking_file_file_path', file_default_scheme() . '://') . $path;
   }
 
-  // Verify directory existance
-  if (!$url = file_create_url($path)) {
+  if (!file_exists($path)) {
     return array(
       'failover' => 'error',
-      'message' => t('File Not Found'),
+      'message' => t('File @name not found', array('@name' => basename($path))),
     );
   }
 
@@ -40,7 +40,7 @@ function freelinking_file_file_callback($target, $plugin) {
   if (in_array(-1, $headers)) {
     return array(
       'failover' => 'error',
-      'message' => t('File Not Found')
+      'message' => t('File not found')
     );
   }
 
@@ -51,6 +51,7 @@ function freelinking_file_file_callback($target, $plugin) {
   else {
     $title = basename($path);
   }
+  $url = file_create_url($path);
 
   return array(check_plain($title), $url);
 }

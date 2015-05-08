@@ -4,10 +4,3 @@ sites/*/settings*.php
 # Ignore paths that contain user-generated content.
 sites/*/files
 sites/*/private
-
-# Ignore the theme's debug files.
-sites/all/themes/wiredpea/Gemfile.lock
-sites/all/themes/wiredpea/css/*.map
-sites/all/themes/wiredpea/sass/.sass-cache
-sites/all/themes/wiredpea/.sass-cache/*
-

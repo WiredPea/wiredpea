@@ -12,7 +12,7 @@
 $freelinking['nid'] = array(
   'indicator' => '/(n(id|ode)?)$/A',
   'callback' => 'freelinking_nid_callback',
-  'tip' => t('Link to a local node by nid'),
+  'tip' => t('Click to view a local node.'),
   'run on view' => TRUE,
 );
 
@@ -44,13 +44,11 @@ function freelinking_nid_callback($target, $plugin) {
   if ($node) {
     if (node_access('view', $node)) {
       $title = $target['text'] ? $target['text'] : $node->title;
-      if (!$target['tooltip']) {
-        $target['tooltip'] = freelinking_internal_tooltip('node', $nid);
-      }
+      $tooltip = $target['tooltip'] ? $target['tooltip'] : $plugin['tip'];
       $value = array(
         check_plain($title),
         'node/' . $nid,
-        array('attributes' => array('title' => $target['tooltip']))
+        array('attributes' => array('title' => $tooltip))
       );
       // Add the nid to the list of cached nodes.
       $nodes[] = $nid;
@@ -60,7 +58,7 @@ function freelinking_nid_callback($target, $plugin) {
   if (!isset($value)) {
     $value = array(
       'failover' => 'error',
-      'message' => t('Invalid Node ID "!nid"', array('!nid' => $nid)),
+      'message' => t('Invalid Node ID “!nid”', array('!nid' => $nid)),
     );
   }
   return $value;

@@ -1,6 +1,4 @@
-# FREELINKING PREPOPULATE README.md
-
-## CONTENTS OF THIS FILE
+CONTENTS OF THIS FILE
 
 * Introduction
 * Requirements
@@ -11,12 +9,12 @@
 * Maintainers
 
 
-## INTRODUCTION
+INTRODUCTION
 
-This module create links to a node/add page. It is used primarily as a
-failover for the *Nodetitle* plugin.  When this module is enabled, the
-failure option "Add a link to create content" is added to the failback
-pull down menu for *Nodetitle*.
+This module create a prepopulated link to a create node. It is used
+primarily as a failover for the *Nodetitle* plugin.  When this module
+is enabled, the failure option “”Add a link to create content” is
+added to the failover pull down menu for *Nodetitle*.
 
 The following items will be inherited from the the parent node and
 used to prepopulate the new node:
@@ -35,12 +33,12 @@ For example, the following freelink: `[[nodetitle:Does not exist]]`,  produces:
 Here, the `parent=836` identifies the book the new node shall be part of.
 
 
-## REQUIREMENTS
+REQUIREMENTS
 
 Requires [Prepopulate][1].
 
 
-## RECOMMENDED MODULES
+RECOMMENDED MODULES
 
 * Book:<br>
   When the core Book module is enabled, create node links will be
@@ -51,18 +49,18 @@ Requires [Prepopulate][1].
   rendered with markdown when you visit `/admin/help/freelinking_prepopulate`.
 
 
-## INSTALLATION
+INSTALLATION
 
 1. Install as you would normally install a contributed drupal
    module. See: [Installing modules][3] for further information.
 2. To configure the module, navigate to Configuration > Content
    authoring > Freelinking settings.  There should be a panel headed
    *Freelinking_prepopulate Plugin Settings*, abd a new option ("Add a
-   link to create content") added to the failback menu for
+   link to create content") added to the failover menu for
    *Nodetitle*.
 
 
-## API AND UTILITIES
+API AND UTILITIES
 
 For API functions and examples of their use, see
 `freelinking_prepopulate.api.php`.
@@ -74,11 +72,11 @@ Prepopulate-based plugins, and automating the process of extracting
 information for such fields.
 
 
-## MAINTAINERS
+MAINTAINERS
 
-* [grayside](https://www.drupal.org/u/grayside)
-* [juampy](https://www.drupal.org/u/juampy)
-* [gisle](https://www.drupal.org/u/gisle) (current maintainer)
+* grayside - https://www.drupal.org/u/grayside
+* juampy - https://www.drupal.org/u/juampy
+* gisle - https://www.drupal.org/u/gisle (current maintainer)
 
 Any help with development (patches, reviews, comments) are welcome.
 

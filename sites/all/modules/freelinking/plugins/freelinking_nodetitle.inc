@@ -10,8 +10,9 @@
 $freelinking['nodetitle'] = array(
   'indicator' => '/nt$|nodetitle|title/A',
   'callback' => 'freelinking_nodetitle_callback',
-  'tip' => t('Link to a local node by title'),
+  'tip' => t('Click to view a local node.'),
   'run on view' => TRUE,
+  'weight' => -10,
 );
 
 /**
@@ -19,44 +20,38 @@ $freelinking['nodetitle'] = array(
  *
  * Resolve $target into a link to the node or display failure.
  *
- * @return
+ * @param $target
+ * @param $plugin
+ *
+ * @return array|bool
  *   an array with node properties to build the link.
  */
 function freelinking_nodetitle_callback($target, $plugin) {
-  $node = freelinking_nodetitle_nid_from_title($target);
-  // if no node was found, identify proceed with configured failover
-  if (!$node) {
-    $target['target'] = check_plain($target['target']);
-    $target['dest'] = check_plain($target['dest']);
+  $link = _freelinking_nodetitle_prepare_link($target, $plugin['tip']);
+  // If no node was found, identify proceed with configured failover.
+  if (empty($link)) {
     return _freelinking_nodetitle_failure($target);
   }
-  else {
-    // construct values for link, use $text if it exists.
-    if (isset($target['text'])) {
-      $title = $target['text'];
-    }
-    elseif (isset($node->title)) {
-      $title = $node->title;
-    }
-    else {
-      $title = 'nodetitle';
-    }
-    $title = check_plain($title);
+
+  // Update defaults if needed.
+  if (isset($target['text'])) {
+    $link['title'] = check_plain($target['text']);
+  }
+  if (isset($target['tooltip'])) {
+    $link['tooltip'] = $target['tooltip'];
   }
 
-  $node_cache_title = &drupal_static('freelinking_nodetitle_nid_from_title', array());
-  $key = array_search($title, $node_cache_title['title']);
-  $nodenid = isset($node->nid) ? $node->nid : $node_cache_title['nid'][$key];
-
-  if (!$target['tooltip']) {
-    $target['tooltip'] = freelinking_internal_tooltip('node', $nodenid);
-  }
-  $language = isset($node->language) ? $node->language : LANGUAGE_NONE;
-  // return link structure
-  return array($title, 'node/' . $nodenid, array(
-      'attributes' => array('title' => $target['tooltip']),
-      'language' => $language,
-  ));
+  // Return link structure.
+  return array(
+    $link['title'],
+    $link['url'],
+    array(
+      'language' => $link['language'],
+      'attributes' => array(
+        'title' => $link['tooltip']
+      ),
+    ),
+  );
 }
 
 /**
@@ -64,12 +59,12 @@ function freelinking_nodetitle_callback($target, $plugin) {
  */
 function freelinking_nodetitle_settings() {
   // Restrict nodetitle plugin to search specified content type
-  $form['freelinking_nodetitle_searchcontenttype'] = array(
-    '#title' => t('Restrict freelinks to this content type'),
-    '#type' => 'select',
-    '#options' => array_merge(array('none' => t('No restriction')), node_type_get_names()),
-    '#default_value' => variable_get('freelinking_nodetitle_searchcontenttype', 'none'),
-    '#description' => t('Lookup by title to find a freelink will be restricted to this content type only.'),
+  $form['freelinking_nodetitle_linkcontenttype'] = array(
+    '#title' => t('Only link to nodes belonging to the following content types:'),
+    '#type' => 'checkboxes',
+    '#options' => node_type_get_names(),
+    '#default_value' => variable_get('freelinking_nodetitle_linkcontenttype', array()),
+    '#description' => t('Lookup by title to will be restricted to this content type or these content types.'),
   );
 
   $failover_option['none'] = t('Do nothing');
@@ -117,58 +112,65 @@ function freelinking_nodetitle_settings() {
 /**
  * Grab the nid associated with the title.
  * Attempt some degree of language sensibility.
+ * @param array $target
+ *
+ * @return array
  */
-function freelinking_nodetitle_nid_from_title(&$target) {
-  // Avoid recursion by marking loaded nodes.
-  $title = $target['dest'];
-  $node_cache_title = &drupal_static(__FUNCTION__, array());
-  if (isset($node_cache_title['title']) && (in_array($title, $node_cache_title['title']))) {
-    // Return TRUE to avoid infinite recursion.
-    return TRUE;
-  }
-  // First time accessing this node. Process it.
-  $params['title'] = $target['dest'];
-  $default_type = variable_get('freelinking_nodetitle_searchcontenttype', 'none');
-  if (isset($target['type'])) {
-    $params['type'] = $target['type'];
-  }
-  elseif ($default_type != 'none') {
-    $params['type'] = $default_type;
-  }
-  $nodes = node_load_multiple(array(), $params);
+function _freelinking_nodetitle_prepare_link($target, $tip) {
+  $link_cache = &drupal_static(__FUNCTION__, array());
+  $id = md5($target['dest']);
+  if (!isset($link_cache[$id])) {
+    $output = array();
 
-  if (empty($nodes)) {
-    return NULL;
-  }
+    // First time accessing this node. Process it.
+    $params['title'] = $target['dest'];
+    $linktypes = variable_get('freelinking_nodetitle_linkcontenttype', array());
 
-  // language restriction. Includes next-best-language logic.
-  $language = array(language_default('language'), '');
-  if (module_exists('locale')) {
-    if (isset($target['language'])) {
-      array_unshift($language, $target['language']);
+    // EntityFieldQuery does not support OR. We solve this by looping
+    // through linktypes, halting when we've found a usable node.
+    $all = $none = TRUE;
+    foreach ($linktypes as $linktype => $value) {
+      if ($value) {
+        $none = FALSE;
+      }
+      else {
+        $all = FALSE;
+      }
     }
-    foreach ($language as $priority) {
-      foreach ($nodes as $node) {
-        if ($priority == $node->language) {
-          $retn = $node;
-          break 2;
+
+    $found = FALSE;
+    if (!$none) {
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->propertyCondition('title', $target['dest'])
+        ->propertyCondition('status', 1); // published nodes
+      $result = $query->execute();
+      if (isset($result['node'])) {
+        foreach ($result['node'] as $item => $value) {
+          if (!empty($linktypes[$value->type])) {
+            $nodex = node_load($item);
+            if (node_access('view', $nodex)) {
+              $found = TRUE;
+              break;
+	    }
+	  }
         }
       }
     }
-  }
-  if (!isset($retn)) {
-    $retn = reset($nodes);
-  }
-  if (node_access('view', $retn)) {
-    if (!isset($key)) {
-      $retn = reset($nodes);
-      $key = key($nodes);
+    if ($found && isset($nodex)) {
+      $tooltip = $target['tooltip'] ? $target['tooltip'] : $tip;
+      $output = array(
+        'title' => $nodex->title,
+        'url' => 'node/' . $nodex->nid,
+        'language' => isset($nodex->language) ? $nodex->language : LANGUAGE_NONE,
+        'tooltip' => $tooltip,
+      );
     }
-    $node_cache_title['nid'][] = $nodes[$key]->nid;
-    $node_cache_title['title'][] = $nodes[$key]->title;
-    $node_cache_title['language'][] = $language;
-    return $retn;
+    // Save processed data in static cache.
+    $link_cache[$id] = $output;
   }
+
+  return $link_cache[$id];
 }
 
 /**
@@ -186,7 +188,7 @@ function _freelinking_nodetitle_failure($target) {
     case 'search':
       return array('failover' => 'search', 'target' => $target);
     case 'error':
-      return array('failover' => 'error', 'message' => t('node title "%title" does not exist',
+      return array('failover' => 'error', 'message' => t('node title “%title” does not exist',
         array('%title' => $target['dest'])));
 
   }

@@ -15,42 +15,43 @@ $freelinking['wikipedia'] = array(
   'indicator' => '/w(iki|ikipedia|p)?$/A',
   'translate' => array(' ' => '_'),
   'replacement' => 'http://' . variable_get('freelinking_wikipedia_languagecode', language_default('language')) . '.wikipedia.org/wiki/%1',
-  'tip' => t('Link to a wikipedia page.'),
+  'tip' => t('Click to visit a wikipedia page.'),
+  'weight' => 11,
 );
 
 $freelinking['wikiquote'] = array(
   'indicator' => '/w(ikiquote|q)$/A',
   'translate' => array(' ' => '_'),
   'replacement' => 'http://' . variable_get('freelinking_wikipedia_languagecode', language_default('language')) . '.wikiquote.org/wiki/%1',
-  'tip' => t('Link to a wikiquote page.'),
+  'tip' => t('Click to visit a wikiquote page.'),
 );
 
 $freelinking['wiktionary'] = array(
   'indicator' => '/w(iktionary|t)$/A',
   'translate' => array(' ' => '_'),
   'replacement' => 'http://' . variable_get('freelinking_wikipedia_languagecode', language_default('language')) . '.wiktionary.org/wiki/%1',
-  'tip' => t('Link to a wiktionary page.'),
+  'tip' => t('Click to visit a wiktionary page.'),
 );
 
 $freelinking['wikinews'] = array(
   'indicator' => '/w(ikinews|n)$/A',
   'translate' => array(' ' => '_'),
   'replacement' => 'http://' . variable_get('freelinking_wikipedia_languagecode', language_default('language')) . '.wikinews.org/wiki/%1',
-  'tip' => t('Link to a wikinews page.'),
+  'tip' => t('Click to visit a wikinews page.'),
 );
 
 $freelinking['wikisource'] = array(
   'indicator' => '/w(ikisource|s)$/A',
   'translate' => array(' ' => '_'),
   'replacement' => 'http://' . variable_get('freelinking_wikipedia_languagecode', language_default('language')) . '.wikisource.org/wiki/%1',
-  'tip' => t('Link to a wikisource page.'),
+  'tip' => t('Click to visit a wikisource page.'),
 );
 
 $freelinking['wikibooks'] = array(
   'indicator' => '/w(ikibooks|b)$/A',
   'translate' => array(' ' => '_'),
   'replacement' => 'http://' . variable_get('freelinking_wikipedia_languagecode', language_default('language')) . '.wikibooks.org/wiki/%1',
-  'tip' => t('Link to a wikibooks page.'),
+  'tip' => t('Click to visit a wikibooks page.'),
 );
 
 

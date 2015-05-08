@@ -8,7 +8,7 @@
 
 $freelinking['user'] = array(
   'indicator' => '/(u|user|username|uid|userid)$/A',
-  'tip' => t('Link to a user profile by name or uid.'),
+  'tip' => t('Click to view user profile.'),
   'callback' => 'freelinking_user_callback',
   'failover' => array('search'),
 );
@@ -31,14 +31,14 @@ function freelinking_user_callback($target, $plugin) {
     if ($user) {
       $title = $target['text'] ? $target['text'] : $user->name;
       $url = 'user/' . $user->uid;
-      $tooltip = $target['tooltip'] ? $target['tooltip'] : t('View user profile.');
+      $tooltip = $target['tooltip'] ? $target['tooltip'] : $plugin['tip'];
 
       return array(check_plain($title), $url, array('attributes' => array('title' => $tooltip)));
     }
     else {
       return array(
         'failover' => variable_get('freelinking_user_failover', 'error'),
-        'message' => t('User "%user" not found', array('%user' => $target['dest']))
+        'message' => t('User “%user” not found', array('%user' => $target['dest']))
       );
     }
   }

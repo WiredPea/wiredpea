@@ -7,12 +7,24 @@
 
 /*
  * Allows for a link like [[drupalorg:12345]] to be expanded to
- * a link to drupal.org/node/12345
+ * a link to www.drupal.org/node/12345
  */
 $freelinking['drupalorg'] = array(
   'indicator' => '/^d(rupal)?o(rg)?$/',
-  'callback' => 'freelinking_drupalorg_callback',
-  'tip' => t('Link to a drupal.org node.'),
+  'callback' => 'freelinking_drupaldev_callback',
+  'tip' => t('Click to view node on Drupal.org.'),
+  'replacement' => 'https://www.drupal.org/node/%1',
+);
+
+/*
+ * Allows for a link like [[drupalproject:freelinking]] to be expanded to
+ * www.drupal.org/project/freelinking
+ */
+$freelinking['drupalproject'] = array(
+  'indicator' => '/^d(rupal)?project/',
+  'callback' => 'freelinking_drupaldev_callback',
+  'tip' => t('Click to view project on Drupal.org.'),
+  'replacement' => 'https://www.drupal.org/project/%1',
 );
 
 /**
@@ -21,64 +33,61 @@ $freelinking['drupalorg'] = array(
  * @return
  *   array with link details.
  */
-function freelinking_drupalorg_callback($target, $plugin) { // resolve nid to a node title
-  if (!is_numeric($target['dest'])) {
-    return array(
-      'failover' => 'error',
-      'message' => t('Invalid Node ID !nid', array('!nid' => $target['dest'])),
-    );
+function freelinking_drupaldev_callback($target, $plugin) {
+  if ('/^d(rupal)?project/' == $plugin['indicator']) {
+    $message = t('Drupal.org/project/@project not found', array('@project' => $target['dest']));
   }
-
-  $url = 'http://drupal.org/node/' . $target['dest'];
-  if (!$target['text'] && variable_get('freelinking_drupalorg_http_request', TRUE)) {
+  else {
+    if (!is_numeric($target['dest'])) {
+      return array(
+        'failover' => 'error',
+        'message' => t('Invalid node id @nid', array('@nid' => $target['dest'])),
+      );
+    }
+    $message = t('Drupal.org/node/@nid not found', array('@nid' => $target['dest']));
+  }
+  $scrape = !variable_get('freelinking_external_http_request', TRUE);
+  $url = check_url(preg_replace('/%1/', $target['dest'], $plugin['replacement']));
+  if ($scrape) {
     $result = drupal_http_request($url, array('headers' => array()));
-    $found_title = preg_match('/<h1.*>(.*)<\/h1>/', $result->data, $matches);
+    if (!$result->code || (400 <= $result->code)) {
+      return array(
+        'failover' => 'error',
+        'message' => $message,
+      );
+    }
+  }
+  $tooltip = $target['tooltip'] ? $target['tooltip'] : $plugin['tip'];
 
-    if ($found_title) { // regex worked to scarf title of page
+  if (!$target['text'] && $scrape) {
+    $found_title = preg_match('/<h1.*>(.*)<\/h1>/', $result->data, $matches);
+    if ($found_title) {
+      if (strlen($matches[1]) < 3) {
+        $found_title = preg_match('/<h2.*>(.*)<\/h2>/', $result->data, $matches);
+      }
+    }
+    if ($found_title) { // regex to scrape title from page worked.
       $replacement = array(
-        'Drupal.org: "' . check_plain($matches[1]) . '"',
-         check_url($url),
-         array ('attributes' => array()),
+        t('Drupal.org: “@title”', array('@title' => $matches[1])),
+        check_url($url),
+        array('attributes' => array('title' => $tooltip))
       );
     }
   }
   elseif ($target['text']) {
-    $replacement = array($target['text'], $url);
-  }
-
-  if (empty($replacement)) {
     $replacement = array(
-      'Drupal.org Node: ' . $target['dest'],
-      $url,
+      check_plain($target['text']),
+      check_url($url),
+      array('attributes' => array('title' => $tooltip))
     );
   }
-
+  if (empty($replacement)) {
+    $prefix = is_numeric($target['dest']) ? '#' : '';
+    $replacement = array(
+      t('Drupal.org: “!prefix@title”', array('!prefix' => $prefix, '@title' => $target['dest'])),
+      check_url($url),
+      array('attributes' => array('title' => $tooltip))
+    );
+  }
   return $replacement;
 }
-
-/**
- * Settings form for drupalorg plugin
- *
- * @return
- *   array form settings.
- */
-function freelinking_drupalorg_settings() {
-  $form['freelinking_drupalorg_http_request'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Get node title'),
-    '#default_value' => variable_get('freelinking_drupalorg_http_request', TRUE),
-    '#description' => t('Untick to show nid instead of node title.'),
-  );
-  return $form;
-}
-
-/*
- * Allows for a link like [[drupalproject:Freelinking]] to be expanded to
- * drupal.org/project/freelinking
- */
-$freelinking['drupalproject'] = array(
-  'indicator' => '/^d(rupal)?project/',
-  'translate' => array(' ' => '_'),
-  'replacement' => 'http://drupal.org/project/%1',
-  'tip' => t('Link to a project on drupal.org by name.'),
-);

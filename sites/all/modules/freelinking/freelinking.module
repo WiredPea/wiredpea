@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- *   Provides flexible, extensible linking of content, wiki-style
+ * Provides flexible, extensible, wiki-style linking of content.
  */
 
 require DRUPAL_ROOT . '/' . (drupal_get_path('module', 'freelinking') . '/freelinking.utilities.inc');
@@ -11,30 +11,14 @@ require DRUPAL_ROOT . '/' . (drupal_get_path('module', 'freelinking') . '/freeli
 * Implements hook_help().
 */
 function freelinking_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#freelinking':
-      $path = dirname(__FILE__) . '/README.md';
-      if (file_exists($path)) {
-        $readme = file_get_contents($path);
-      }
-      if (!isset($readme)) {
-        return NULL;
-      }
-      if (module_exists('markdown')) {
-        $filters = module_invoke('markdown', 'filter_info');
-        $info = $filters['filter_markdown'];
-        if (function_exists($info['process callback'])) {
-          $function = $info['process callback'];
-          $output = filter_xss_admin($function($readme, NULL));
-        }
-        else {
-          $output = '<pre>' . check_plain($readme) . '</pre>';
-        }
-      }
-      else {
-        $output = '<pre>' . check_plain($readme) . '</pre>';
-      }
-      return $output;
+  if (!function_exists('advanced_help_hint_docs')){
+    function advanced_help_hint_docs($ahhd_var_1, $ahhd_var_2, $ahhd_var_3) {
+      return 'WARNING: Install and enable Advanced Help Hint';
+    }
+  }
+  if ($path == 'admin/help#freelinking') {
+    return '<p>' . t('This module is a filter to turn wiki-style links into HTML links.') . '</p>' .
+      '<p>' . advanced_help_hint_docs('freelinking', 'https://www.drupal.org/node/2463045', TRUE) . '</p>';
   }
 }
 
@@ -96,6 +80,9 @@ function _freelinking_process($text, $filter, $format, $langcode) {
   $newtext = '';
   while (TRUE) {
     $offset = 0;
+    if (empty($remain)) {
+      break;
+    }
     if ('[' == $remain[0] && '[' == $remain[1]) {
       $infreelinkp = TRUE;
       $delim = ']]';
@@ -122,7 +109,7 @@ function _freelinking_process($text, $filter, $format, $langcode) {
         $target = substr($chunk_stripped, $delim + 1);
       }
       // find a plugin for the match
-      if (('showtext' == $indicator) || ('nowiki' == $indicator) || ('redact' == $indicator) || ('http' == $indicator) ||  ('https' == $indicator) ||  ('external' == $indicator)) {
+      if (('showtext' == $indicator) || ('nowiki' == $indicator) || ('redact' == $indicator)) {
         $current_plugin = $indicator;
       }
       else {
@@ -134,9 +121,15 @@ function _freelinking_process($text, $filter, $format, $langcode) {
         } // end looping through plugins
       }
 
+      if (empty($global_options['ignore_upi']) && $freelinking['nodetitle']['enabled'] && 'nodetitle' == $defaultplugin && empty($current_plugin)) {
+        $target = $chunk_stripped;
+        $current_plugin = 'nodetitle';
+      }
       if (empty($global_options['ignore_upi']) || !empty($current_plugin)) {
         if (empty($current_plugin)) {
-          $message = t('unknown plugin indicator "%indicator"', array('%indicator' => $indicator));
+	  $message = ('NONE' == $indicator) ?
+	    t('Missing plugin indicator') :
+            t('unknown plugin indicator "%indicator"', array('%indicator' => $indicator));
           $link = theme('freelink_error', array('plugin' => $indicator, 'message' => $message));
         }
         else {
@@ -182,7 +175,7 @@ function _freelinking_tips($delta, $format, $long = FALSE) {
 
   if ($long == FALSE) {
     $default = variable_get('freelinking_default', 'nodetitle');
-    if ('none' != $default) {
+    if ('NONE' != $default) {
       $default_tip = $plugins[$default]['tip'];
       if ($default_tip) {
         $text .= ' ' . t('By default (no indicator): !default_tip', array('!default_tip' => $default_tip));
@@ -248,22 +241,23 @@ function freelinking_freelink_alter(&$link, $context) {
     return;
   }
   // title text is empty, insert from target or use URL
-  if (!$link[0]) {
-    $link[0] = $target['text'] ? $target['text'] : $target['target'];
+  if (empty($link[0])) {
+    $link[0] = $target['text'] ? $target['text'] : $target['dest'];
   }
 
   // support html link text unless plugin overrides
-  if (isset($plugin['html']) && $plugin['html'] !== FALSE) {
+  if (isset($plugin['html']) && $plugin['html'] == TRUE) {
     $link[2]['html'] = TRUE;
   }
 
-  // Set an empty tooltip as the URL (unless the target has one)
-  if (isset($link[2]['attributes'])) {
-    $link[2]['attributes']['title'] =
-      $target['tooltip'] ? $target['tooltip'] : $link[1];
-  }
-  else {
-    $link[2]['attributes'] = array();
+  // Set an empty tooltip
+  if (!isset($link[2]['attributes']['title'])) {
+    if (isset($context['plugin']['tip'])) {
+      $link[2]['attributes']['title'] = $context['plugin']['tip'];
+    }
+    else {
+      $link[2]['attributes']['title'] = $link[1];
+    }
   }
 
   // standard set of CSS classes
@@ -294,19 +288,6 @@ function freelinking_freelink_alter(&$link, $context) {
  * - redact: as showtext for logged in users, will redact for anon.
  */
 function _freelinking_build_freelink($freelinking, $plugin_name, $target) {
-  if (('http' == $plugin_name) || ('https' == $plugin_name) || ('external' == $plugin_name)) {
-    if ('external' == $plugin_name) {
-      $plugin_name = '';
-    }
-    else {
-      $plugin_name = $plugin_name . ':';
-    }
-    $elements = explode('|', $target['target']);
-    $host = parse_url('http:' . $elements[0], PHP_URL_HOST);
-    $text = !empty($elements[1]) ? $elements[1] : $host;
-    $tooltip = isset($elements[2]) ? $elements[2] : t('Link to @url.', array('@url' => $host));
-    return '<a class="freelink freelink-external" href="' . $plugin_name . $elements[0] . '" title="' . $tooltip . '">' . $text . '</a>';
-  }
   if ('showtext' == $plugin_name) {
     $text = $target['text'] ? $target['text'] : $target['dest'];
     return $text;
@@ -346,15 +327,14 @@ function _freelinking_build_freelink($freelinking, $plugin_name, $target) {
 
   // process replacement callback
   if (isset($plugin['callback']) && function_exists($plugin['callback'])) {
-    $link = call_user_func_array($plugin['callback'],
-      array($target, $plugin));
+    $link = call_user_func_array($plugin['callback'], array($target, $plugin));
   }
 
   // Standardize link, grab authoritative "structured" version
   // designate the rendered text for display
   if (is_array($link)) {
     if (isset($link['failover']) && $link['failover'] != 'error' &&
-        $link['failover'] != 'none') {
+        $link['failover'] != 'NONE') {
       $target = isset($link['target']) ? $link['target'] : $target;
       $target['other']['trace'][] = $plugin_name;
       unset($freelinking[$plugin_name]);

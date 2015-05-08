@@ -3,14 +3,15 @@
  * freelinking_prepopulate.install
  *
  * @file
- * Warns of specific Freelinking version compatibility.
+ * Provides plugins for node create for ver. 3 of Freelinking.
  */
 
 /**
- * Implements hook_enable().
+ * Implements hook_disable().
  */
-function freelinking_prepopulate_enable() {
-  drupal_set_message(
-    t('Freelinking Prepopulate provides plugins to the 3.x line of Freelinking.')
-  );
+function freelinking_prepopulate_disable() {
+  $failover = variable_get('freelinking_nodetitle_failover', 'error');
+  if ('create' == $failover) {
+    variable_set('freelinking_nodetitle_failover', 'error');
+  }
 }
