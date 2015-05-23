@@ -33,7 +33,7 @@ h2 {
 
 /* line 1, ../sass/components/_article.scss */
 article {
-  padding: 1em; }
+  padding: 0em 1em 1em 1em; }
 
 /* line 1, ../sass/components/_layout.scss */
 .l-page {
@@ -127,6 +127,13 @@ article {
 /* line 39, ../sass/components/_navigation.scss */
 .l-inner-header {
   position: relative; }
+
+/* line 1, ../sass/components/_node.scss */
+article.node {
+  border-bottom: 1px dotted #999999; }
+  /* line 4, ../sass/components/_node.scss */
+  article.node .submitted {
+    margin: 0; }
 
 /* line 2, ../sass/components/_pager.scss */
 .pager .pager__item {
