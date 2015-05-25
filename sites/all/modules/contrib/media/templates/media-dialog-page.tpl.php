@@ -10,7 +10,7 @@
  * - $base_path: The base URL path of the Drupal installation. At the very
  *   least, this will always default to /.
  * - $directory: The directory the template is located in, e.g. modules/system
- *   or themes/bartik.
+ *   or themes/garland.
  * - $is_front: TRUE if the current page is the front page.
  * - $logged_in: TRUE if the user is registered and signed in.
  * - $is_admin: TRUE if the user has permission to access administration pages.
@@ -30,7 +30,6 @@
  *   site, if they have been configured.
  * - $secondary_menu (array): An array containing the Secondary menu links for
  *   the site, if they have been configured.
- * - $secondary_menu_heading: The title of the menu used by the secondary links.
  * - $breadcrumb: The breadcrumb trail for the current page.
  *
  * Page content (in order of occurrence in the default page.tpl.php):
@@ -54,78 +53,21 @@
  *   comment/reply/12345).
  *
  * Regions:
- * - $page['branding']: Items for the branding region.
- * - $page['header']: Items for the header region.
- * - $page['navigation']: Items for the navigation region.
  * - $page['help']: Dynamic help text, mostly for admin pages.
- * - $page['highlighted']: Items for the highlighted content region.
+ * - $page['highlight']: Items for the highlighted content region.
  * - $page['content']: The main content of the current page.
  * - $page['sidebar_first']: Items for the first sidebar.
  * - $page['sidebar_second']: Items for the second sidebar.
+ * - $page['header']: Items for the header region.
  * - $page['footer']: Items for the footer region.
  *
  * @see template_preprocess()
  * @see template_preprocess_page()
  * @see template_process()
- * @see omega_preprocess_page()
  */
 ?>
-<div class="l-page">
-  <header class="l-header" role="banner">
-    <div class="l-inner-header">
-        <div class="l-branding">
-          <?php if ($logo): ?>
-            <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" class="site-logo"><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /></a>
-          <?php endif; ?>
 
-          <?php if ($site_name || $site_slogan): ?>
-            <?php if ($site_name): ?>
-              <h1 class="site-name">
-                <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"><span><?php print $site_name; ?></span></a>
-              </h1>
-            <?php endif; ?>
-
-            <?php if ($site_slogan): ?>
-              <h2 class="site-slogan"><?php print $site_slogan; ?></h2>
-            <?php endif; ?>
-          <?php endif; ?>
-
-          <?php print render($page['branding']); ?>
-        </div>
-
-        <?php print render($page['header']); ?>
-        <?php print render($page['navigation']); ?>
-    </div>
-  </header>
-
-  <div class="l-main">
-      <?php if (isset($header_image)): ?>
-      <div class="header-image" style="background-image: url('<?php echo $header_image ?>');"></div>
-      <?php endif ?>
-    <div class="l-content" role="main">
-      <?php print render($page['highlighted']); ?>
-      <?php print $breadcrumb; ?>
-      <a id="main-content"></a>
-      <?php print render($title_prefix); ?>
-      <?php if ($title): ?>
-        <h1><?php print $title; ?></h1>
-      <?php endif; ?>
-      <?php print render($title_suffix); ?>
-      <?php print $messages; ?>
-      <?php print render($tabs); ?>
-      <?php print render($page['help']); ?>
-      <?php if ($action_links): ?>
-        <ul class="action-links"><?php print render($action_links); ?></ul>
-      <?php endif; ?>
-      <?php print render($page['content']); ?>
-      <?php print $feed_icons; ?>
-    </div>
-
-    <?php print render($page['sidebar_first']); ?>
-    <?php print render($page['sidebar_second']); ?>
-  </div>
-
-  <footer class="l-footer" role="contentinfo">
-    <?php print render($page['footer']); ?>
-  </footer>
-</div>
+<div id="media-browser-page-wrapper"><div id="media-browser-page">
+  <?php if (isset($messages)) { print $messages; } ?>
+  <?php print render($page['content']); ?>
+</div></div> <!-- /#page, /#page-wrapper -->

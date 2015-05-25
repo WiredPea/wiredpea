@@ -35,6 +35,12 @@ h2 {
 article {
   padding: 0em 1em 1em 1em; }
 
+/* line 1, ../sass/components/_header-image.scss */
+.header-image {
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 250px; }
+
 /* line 1, ../sass/components/_layout.scss */
 .l-page {
   background: #FFFFFF;
@@ -143,7 +149,7 @@ article.node {
   background: #cdf4bb; }
   /* line 6, ../sass/components/_pager.scss */
   .pager .pager__item a {
-    color: #000000;
+    color: #043023;
     text-decoration: none; }
 
 /* line 1, ../sass/components/_sidebar.scss */
