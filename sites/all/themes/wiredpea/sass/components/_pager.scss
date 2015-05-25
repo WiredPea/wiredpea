@@ -4,7 +4,7 @@
     background: lighten($link, 50%);
 
     a {
-      color: #000000;
+      color: $link_active;
       text-decoration: none;
     }
   }
