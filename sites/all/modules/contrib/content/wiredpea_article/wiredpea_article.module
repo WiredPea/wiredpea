@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the WiredPea Article feature.
+ */
+
+include_once 'wiredpea_article.features.inc';
