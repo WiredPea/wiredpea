@@ -58,7 +58,6 @@
   <title><?php print $head_title; ?></title>
   <?php print $styles; ?>
   <?php print $scripts; ?>
-  <script src="//load.sumome.com/" data-sumo-site-id="9761a33898bd785978dbc893fa1f382e14915c03c11e8cec348cc0b3114908e9" async="async"></script>
 </head>
 <body<?php print $attributes;?>>
   <a href="#main-content" class="element-invisible element-focusable"><?php print t('Skip to main content'); ?></a>
