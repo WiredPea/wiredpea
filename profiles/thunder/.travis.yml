@@ -40,6 +40,8 @@ install:
   # Install Drush
   - composer global require drush/drush:~8 --prefer-source
   - phpenv rehash
+  - drush dl drupalorg_drush-7.x
+  - drush verify-makefile
 
   # MySQL Options
   - mysql -e 'SET GLOBAL wait_timeout = 5400;'
@@ -51,15 +53,24 @@ install:
   - phpenv config-add drupal.php.ini
   - phpenv rehash
 
-  - bash scripts/build-docroot.sh
+  # Set global environment variables
+  - export THUNDER_DIST_DIR=`echo $(pwd)`
+  - export TEST_DIR=`echo ${THUNDER_DIST_DIR}"/../test-dir"`
+  - mkdir -p ${TEST_DIR}
 
-  # Install thunder
-  - cd test-dir/docroot
-  - drush si thunder --db-url=mysql://root:@localhost/drupal -y
+  # Install Test requirements and set global environment variables
+  - composer global require "behat/behat:~3.0" "drupal/drupal-extension:^3.2" "devinci/devinci-behat-extension:dev-master"
+  - BEHAT_PARAMS='{"extensions":{"Drupal\\DrupalExtension":{"drupal":{"drupal_root":"TEST_DIR_MACRO/docroot"}},"Behat\\MinkExtension":{"base_url":"http://localhost:8080"}}}'
+  - BEHAT_PARAMS=`echo $BEHAT_PARAMS | sed -e s#TEST_DIR_MACRO#$TEST_DIR#g`
+  - export BEHAT_PARAMS
+
+  # Build docroot and install thunder
+  - bash -x -e ${THUNDER_DIST_DIR}/scripts/build-docroot.sh
 
 before_script:
+  - cd ${TEST_DIR}/docroot
   - drush runserver --default-server=builtin 8080 &>/dev/null &
+  - phantomjs --webdriver=4444 > /dev/null &
 
 script:
-  - drush en simpletest -y
-  - php core/scripts/run-tests.sh --php `which php` --die-on-fail --verbose --url http://localhost:8080 Thunder
+  - travis_wait 30 bash -x -e ${THUNDER_DIST_DIR}/scripts/run-tests.sh

@@ -1,16 +1,13 @@
 <?php
-/**
- * @file
- * Contains
- */
 
 namespace Drupal\thunder_media\Tests;
-
 
 use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\thunder\ThunderBaseTest;
 
 /**
+ * Tests for transliteration of file names.
+ *
  * @group Thunder
  */
 class FilenameTransliterationTest extends ThunderBaseTest {
@@ -22,6 +19,9 @@ class FilenameTransliterationTest extends ThunderBaseTest {
    */
   public static $modules = array('file_test', 'file');
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
 
     parent::setUp();
@@ -31,7 +31,9 @@ class FilenameTransliterationTest extends ThunderBaseTest {
       ->save();
   }
 
-
+  /**
+   * Test for transliteration of file name.
+   */
   public function testFileTransliteration() {
 
     $account = $this->drupalCreateUser(array('access site reports'));
@@ -60,4 +62,5 @@ class FilenameTransliterationTest extends ThunderBaseTest {
     $this->assertIdentical('temporary://foodeg.png', $file->getFileUri());
 
   }
+
 }

@@ -1,5 +1,7 @@
 # Thunder
 
+[![Build Status](https://travis-ci.org/BurdaMagazinOrg/thunder-distribution.svg?branch=8.x-1.x)](https://travis-ci.org/BurdaMagazinOrg/thunder-distribution)
+
 Thunder is a Drupal 8 distribution for professional publishers. It consists of the current Drupal 8 functionality, lots of useful modules from publishers and industry partners, and an environment which makes it easy to install, deploy and add new functionality.
 
 ## What's installed by default?
@@ -12,6 +14,7 @@ Thunder is a Drupal 8 distribution for professional publishers. It consists of t
 * inline_entity_form
 * metatag
 * media_entity
+* media_entity_browser
 * media_entity_image
 * media_entity_slideshow
 * scheduler
@@ -33,7 +36,6 @@ Plus some pre-configured content-types
 
 * googleanalytics
 * ivm
-* ad integration
 * breakpoint js settings
 * riddle
 
@@ -49,3 +51,6 @@ drush dl thunder
 
 For further information follow the [install instructions](https://www.drupal.org/documentation/install). 
 
+## Development
+
+For Development information please take a look at [docs/development.md](docs/development.md).

@@ -5,7 +5,7 @@ description: 'The Drupal8 based CMS for professional publishing.'
 distribution:
   name: Thunder
   install:
-    theme: thunder
+    theme: thunder_admin
 
 # Required modules
 dependencies:
@@ -45,6 +45,7 @@ dependencies:
   - media_entity
   - scheduler
   - simple_sitemap
+  - slick_media
   - pathauto
   - paragraphs
 # thunder
@@ -52,15 +53,13 @@ dependencies:
   - thunder_article
   - thunder_media
   - thunder_taxonomy
-  - infinite_article
 themes:
-  - thunder
-  - infinite
-  - seven
+  - thunder_base
+  - thunder_admin
 
 
-# Information added by Drupal.org packaging script on 2016-06-10
-version: '8.x-1.0-beta7'
+# Information added by Drupal.org packaging script on 2016-08-16
+version: '8.x-1.0-beta10'
 core: '8.x'
 project: 'thunder'
-datestamp: 1465565342
+datestamp: 1471364942

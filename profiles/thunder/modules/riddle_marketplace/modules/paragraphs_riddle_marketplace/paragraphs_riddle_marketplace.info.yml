@@ -8,8 +8,8 @@ hidden: false
 dependencies:
   - paragraphs
   - riddle_marketplace
-# Information added by Drupal.org packaging script on 2016-06-10
-version: '8.x-1.0-alpha3'
+# Information added by Drupal.org packaging script on 2016-07-28
+version: '8.x-1.0-alpha4'
 core: '8.x'
 project: 'riddle_marketplace'
-datestamp: 1465548840
+datestamp: 1469702949

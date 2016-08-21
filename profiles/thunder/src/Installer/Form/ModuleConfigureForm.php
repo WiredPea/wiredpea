@@ -1,45 +1,39 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\thunder\Installer\Form\SiteConfigureForm.
- */
-
 namespace Drupal\thunder\Installer\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\thunder\Installer\Form\OptionalModules\AbstractOptionalModule;
-use Drupal\thunder\Installer\Form\OptionalModules\AdIntegration;
-use Drupal\thunder\Installer\Form\OptionalModules\FacebookInstantArticles;
-use Drupal\thunder\Installer\Form\OptionalModules\GoogleAnalytics;
-use Drupal\thunder\Installer\Form\OptionalModules\HierarchicalConfig;
-use Drupal\thunder\Installer\Form\OptionalModules\IvwIntegration;
-use Drupal\thunder\Installer\Form\OptionalModules\RiddleIntegration;
-use Drupal\thunder\Installer\Form\OptionalModules\ThunderDemo;
+use Drupal\thunder\OptionalModulesManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 
 /**
  * Provides the site configuration form.
  */
 class ModuleConfigureForm extends ConfigFormBase {
 
-
   /**
-   * The module installer.
+   * The plugin manager.
    *
-   * @var \Drupal\Core\Extension\ModuleInstallerInterface
+   * @var \Drupal\thunder\OptionalModulesManager
    */
-  protected $moduleInstaller;
-
+  protected $optionalModulesManager;
 
   /**
-   * @var AbstractOptionalModule[]
+   * Constructs a \Drupal\system\ConfigFormBase object.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param OptionalModulesManager $optionalModulesManager
+   *   The factory for configuration objects.
    */
-  private $provider = [];
+  public function __construct(ConfigFactoryInterface $config_factory, OptionalModulesManager $optionalModulesManager) {
+
+    parent::__construct($config_factory);
+
+    $this->optionalModulesManager = $optionalModulesManager;
+  }
 
   /**
    * {@inheritdoc}
@@ -47,25 +41,9 @@ class ModuleConfigureForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('module_installer')
+      $container->get('plugin.manager.thunder.optional_modules')
     );
   }
-
-
-  public function __construct(ConfigFactoryInterface $config_factory, ModuleInstallerInterface $module_installer) {
-    parent::__construct($config_factory);
-
-    $this->moduleInstaller = $module_installer;
-
-    $this->provider = [
-      new ThunderDemo($config_factory),
-      new GoogleAnalytics($config_factory),
-      new IvwIntegration($config_factory),
-      new FacebookInstantArticles($config_factory),
-      new RiddleIntegration($config_factory),
-    ];
-  }
-
 
   /**
    * {@inheritdoc}
@@ -79,14 +57,7 @@ class ModuleConfigureForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
 
-    $configNames = [];
-
-    /** @var AbstractOptionalModule $provider */
-    foreach ($this->provider as $provider) {
-      $configNames = array_merge($configNames, $provider->getEditableConfigNames());
-    }
-
-    return $configNames;
+    return [];
   }
 
   /**
@@ -99,16 +70,17 @@ class ModuleConfigureForm extends ConfigFormBase {
     $installableModules = [];
     $defaultValues = [];
 
-    /** @var AbstractOptionalModule $provider */
-    foreach ($this->provider as $provider) {
+    foreach ($this->optionalModulesManager->getDefinitions() as $provider) {
 
-      $installableModules[$provider->getFormId()] = $provider->getFormName();
+      $instance = $this->optionalModulesManager->createInstance($provider['id']);
 
-      if ($provider->isEnabled()) {
-        $defaultValues[] = $provider->getFormId();
+      $installableModules[$provider['id']] = $provider['label'];
+
+      if ($instance->isStandardlyEnabled()) {
+        $defaultValues[] = $provider['id'];
       }
 
-      $form = $provider->buildForm($form, $form_state);
+      $form = $instance->buildForm($form, $form_state);
 
     }
     $form['#title'] = $this->t('Install & configure modules');
@@ -132,23 +104,20 @@ class ModuleConfigureForm extends ConfigFormBase {
     return $form;
   }
 
-
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
     $installModules = $form_state->getValue('install_modules');
+    $buildInfo = $form_state->getBuildInfo();
 
-    $installModules = array_filter($installModules);
+    $install_state = $buildInfo['args'];
 
-    $this->moduleInstaller->install($installModules);
-    /** @var ConfigFormBase $provider */
-    foreach ($this->provider as $provider) {
-      if (in_array($provider->getFormId(), $installModules)) {
-        $provider->submitForm($form, $form_state);
-      }
-    }
+    $install_state[0]['thunder_additional_modules'] = array_filter($installModules);
+    $install_state[0]['form_state_values'] = $form_state->getValues();
+
+    $form_state->setBuildInfo($buildInfo);
+
   }
 
 }

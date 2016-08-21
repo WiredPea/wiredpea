@@ -1,14 +1,14 @@
 <?php
-/**
- * @file
- * Contains
- */
 
 namespace Drupal\thunder;
 
-
 use Drupal\simpletest\WebTestBase;
 
+/**
+ * Class ThunderBaseTest.
+ *
+ * @package Drupal\thunder
+ */
 class ThunderBaseTest extends WebTestBase {
 
   protected $profile = 'thunder';
@@ -37,4 +37,5 @@ class ThunderBaseTest extends WebTestBase {
     }
     return $retval;
   }
+
 }

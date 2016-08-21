@@ -1,13 +1,16 @@
 <?php
+
 /**
  * @file
- * Contains
+ * Contains.
  */
+
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_ENTITY_TYPE_create().
  */
-function thunder_media_file_create(\Drupal\file\Entity\File $entity) {
+function thunder_media_file_create(File $entity) {
 
   $config = \Drupal::config('thunder_media.settings');
 
@@ -28,7 +31,21 @@ function thunder_media_file_create(\Drupal\file\Entity\File $entity) {
  * Implements hook_preprocess_views_view().
  */
 function thunder_media_preprocess_views_view(&$variables) {
-  if ($variables['view']->id() === 'image_browser') {
+
+  $thunder_media_browser = [
+    'image_browser',
+    'media_browser',
+    'gallery_browser',
+  ];
+
+  if (in_array($variables['view']->id(), $thunder_media_browser)) {
     $variables['view_array']['#attached']['library'][] = 'media_entity_browser/view';
   }
+}
+
+/**
+ *
+ */
+function thunder_media_page_attachments(array &$page) {
+  $page['#attached']['library'][] = 'thunder_media/gallery';
 }

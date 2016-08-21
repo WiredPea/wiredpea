@@ -11,6 +11,7 @@ use Drupal\crop\Entity\Crop;
 use Drupal\image\Plugin\ImageEffect\ResizeImageEffect;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides a base class for image effects.
@@ -32,6 +33,27 @@ abstract class FocalPointEffectBase extends ResizeImageEffect implements Contain
   protected $focalPointConfig;
 
   /**
+   * The original image before any effects are applied.
+   *
+   * @var \Drupal\Core\Image\ImageInterface
+   */
+  protected $originalImage;
+
+  /**
+   * Focal point manager object.
+   *
+   * @var \Drupal\focal_point\FocalPointManager
+   */
+  protected $focalPointManager;
+
+  /**
+   * The current request object.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request
+   */
+  public $request;
+
+  /**
    * Constructs a \Drupal\focal_point\FocalPointEffectBase object.
    *
    * @param array $configuration
@@ -42,19 +64,27 @@ abstract class FocalPointEffectBase extends ResizeImageEffect implements Contain
    *   The plugin implementation definition.
    * @param \Psr\Log\LoggerInterface $logger
    *   Image logger.
+   * @param \Drupal\focal_point\FocalPointManager $focal_point_manager
+   *   Focal point manager.
    * @param \Drupal\crop\CropStorageInterface $crop_storage
    *   Crop storage.
    * @param \Drupal\Core\Config\ImmutableConfig $focal_point_config
    *   Focal point configuration object.
+   * @param \Symfony\Component\HttpFoundation\Request
+   *   Current request object.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerInterface $logger, CropStorageInterface $crop_storage, ImmutableConfig $focal_point_config) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerInterface $logger, FocalPointManager $focal_point_manager, CropStorageInterface $crop_storage, ImmutableConfig $focal_point_config, Request $request) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $logger);
+    $this->focalPointManager = $focal_point_manager;
     $this->cropStorage = $crop_storage;
     $this->focalPointConfig = $focal_point_config;
+    $this->request = $request;
   }
 
   /**
    * {@inheritdoc}
+   *
+   * @codeCoverageIgnore
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
@@ -62,9 +92,20 @@ abstract class FocalPointEffectBase extends ResizeImageEffect implements Contain
       $plugin_id,
       $plugin_definition,
       $container->get('logger.factory')->get('image'),
+      new FocalPointManager($container->get('entity_type.manager')),
       $container->get('entity_type.manager')->getStorage('crop'),
-      $container->get('config.factory')->get('focal_point.settings')
+      $container->get('config.factory')->get('focal_point.settings'),
+      \Drupal::request()
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function applyEffect(ImageInterface $image) {
+    // @todo: Get the original image in case there are multiple scale/crop effects?
+    $this->originalImage = clone $image;
+    return TRUE;
   }
 
   /**
@@ -118,14 +159,11 @@ abstract class FocalPointEffectBase extends ResizeImageEffect implements Contain
    *
    * @param ImageInterface $image
    *   The image resource to crop.
-   * @param array $original_image_size
-   *   An array with keys 'width' and 'height' representing the size (in pixels)
-   *   of the source image (prior to any manipulation).
    *
    * @return bool
    *   TRUE if the image is successfully cropped, otherwise FALSE.
    */
-  public function applyCrop(ImageInterface $image, $original_image_size) {
+  public function applyCrop(ImageInterface $image) {
     $crop_type = $this->focalPointConfig->get('crop_type');
 
     /** @var \Drupal\crop\CropInterface $crop */
@@ -144,7 +182,7 @@ abstract class FocalPointEffectBase extends ResizeImageEffect implements Contain
       ]);
     }
 
-    $anchor = $this->calculateAnchor($image, $crop, $original_image_size);
+    $anchor = $this->calculateAnchor($image, $crop);
     if (!$image->crop($anchor['x'], $anchor['y'], $this->configuration['width'], $this->configuration['height'])) {
       $this->logger->error(
         'Focal point scale and crop failed while scaling and cropping using the %toolkit toolkit on %path (%mimetype, %dimensions, anchor: %anchor)',
@@ -174,38 +212,76 @@ abstract class FocalPointEffectBase extends ResizeImageEffect implements Contain
    *   Image object representing original image.
    * @param \Drupal\crop\CropInterface $crop
    *   Crop entity.
-   * @param array $original_image_size
-   *   An array with keys 'width' and 'height' representing the size (in pixels)
-   *   of the source image (prior to any manipulation).
    *
    * @return array
    *   Array with two keys (x, y) and anchor coordinates as values.
    */
-  protected function calculateAnchor(ImageInterface $image, CropInterface $crop, $original_image_size) {
-    $original_anchor = $crop->anchor();
-    $relative_anchor = \Drupal::service('focal_point.manager')->absoluteToRelative($original_anchor['x'], $original_anchor['y'], $original_image_size['width'], $original_image_size['height']);
-
-    $new_image_size = [
+  protected function calculateAnchor(ImageInterface $image, CropInterface $crop) {
+    $crop_size = $crop->size();
+    $image_size = [
       'width' => $image->getWidth(),
       'height' => $image->getHeight(),
     ];
-    $new_anchor = \Drupal::service('focal_point.manager')->relativeToAbsolute($relative_anchor['x'], $relative_anchor['y'], $new_image_size['width'], $new_image_size['height']);
 
-    // Set the minimum number of pixels that must exist between the edge of the
-    // image and the anchor point (in both the x and y directions).
-    $crop_size = $crop->size();
-    $anchor_min_margin_x = (int) ceil($crop_size['width'] / 2);
-    $anchor_min_margin_y = (int) ceil($crop_size['height'] / 2);
+    // Check if we are generating a preview image. If so get the focal point
+    // from the query parameter, otherwise use the crop position.
+    $preview_value = $this->getPreviewValue();
+    if (is_null($preview_value)) {
+      $focal_point = $crop->position();
+    }
+    else {
+      // @todo: should we check that preview_value is valid here? If its invalid it gets converted to 0,0.
+      list($x, $y) = explode('x', $preview_value);
+      $focal_point = $this->focalPointManager->relativeToAbsolute($x, $y, $this->originalImage->getWidth(), $this->originalImage->getHeight());
+    }
+
+    $focal_point['x'] = (int) round($focal_point['x'] / $this->originalImage->getWidth() * $image_size['width']);
+    $focal_point['y'] = (int) round($focal_point['y'] / $this->originalImage->getHeight() * $image_size['height']);
+
+    // The anchor must be the top-left coordinate of the crop area but the focal
+    // point is expressed as the center coordinates of the crop area.
+    $anchor = [
+      'x' => (int) ($focal_point['x'] - ($crop_size['width'] / 2)),
+      'y' => (int) ($focal_point['y'] - ($crop_size['height'] / 2)),
+    ];
 
     // Ensure that the crop area doesn't fall off the bottom right of the image.
-    $new_anchor['x'] = ($new_anchor['x'] + $anchor_min_margin_x > $new_image_size['width']) ? $new_image_size['width'] - $crop_size['width'] : $new_anchor['x'] - $anchor_min_margin_x;
-    $new_anchor['y'] = ($new_anchor['y'] + $anchor_min_margin_y > $new_image_size['height']) ? $new_image_size['height'] - $crop_size['height'] : $new_anchor['y'] - $anchor_min_margin_y;
+    $anchor['x'] = $anchor['x'] + $crop_size['width'] <= $image_size['width'] ? $anchor['x'] : $image_size['width'] - $crop_size['width'];
+    $anchor['y'] = $anchor['y'] + $crop_size['height'] <= $image_size['height'] ? $anchor['y'] : $image_size['height'] - $crop_size['height'];
 
     // Ensure that the crop area doesn't fall off the top left of the image.
-    $new_anchor['x'] = max(0, $new_anchor['x']);
-    $new_anchor['y'] = max(0, $new_anchor['y']);
+    $anchor['x'] = max(0, $anchor['x']);
+    $anchor['y'] = max(0, $anchor['y']);
 
-    return $new_anchor;
+    return $anchor;
   }
 
+  /**
+   * Set original image.
+   *
+   * @param \Drupal\Core\Image\ImageInterface $image
+   */
+  public function setOriginalImage(ImageInterface $image) {
+    $this->originalImage = $image;
+  }
+
+  /**
+   * Get original image.
+   *
+   * @return \Drupal\Core\Image\ImageInterface
+   */
+  public function getOriginalImage() {
+    return $this->originalImage;
+  }
+
+  /**
+   * Get the 'focal_point_preview_value' query string value.
+   *
+   * @return string|NULL
+   *
+   * @codeCoverageIgnore
+   */
+  protected function getPreviewValue() {
+    return $this->request->query->get('focal_point_preview_value');
+  }
 }

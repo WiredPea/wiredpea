@@ -8,8 +8,8 @@ dependencies:
   - default_content
   - better_normalizers
 
-# Information added by Drupal.org packaging script on 2016-06-10
-version: '8.x-1.0-beta7'
+# Information added by Drupal.org packaging script on 2016-08-16
+version: '8.x-1.0-beta10'
 core: '8.x'
 project: 'thunder'
-datestamp: 1465565342
+datestamp: 1471364942

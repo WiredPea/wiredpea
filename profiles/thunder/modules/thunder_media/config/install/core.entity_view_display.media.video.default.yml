@@ -36,8 +36,8 @@ content:
     settings:
       autoplay: true
       responsive: true
-      width: '854'
-      height: '480'
+      width: 854
+      height: 480
     third_party_settings: {  }
     type: video_embed_field_video
 hidden:

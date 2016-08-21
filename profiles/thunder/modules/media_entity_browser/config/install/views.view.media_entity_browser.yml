@@ -24,7 +24,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access content'
+          perm: 'view media'
       cache:
         type: tag
         options: {  }

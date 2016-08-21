@@ -6,6 +6,7 @@ package: Thunder
 # version: 8.x-1.x-dev
 dependencies:
   - dropzonejs_eb_widget
+  - entity_browser_entity_form
   - field
   - field_ui
   - focal_point
@@ -18,11 +19,12 @@ dependencies:
   - media_entity_slideshow
   - media_entity_twitter
   - responsive_image
+  - slick_media
   - pathauto
   - video_embed_media
 
-# Information added by Drupal.org packaging script on 2016-06-10
-version: '8.x-1.0-beta7'
+# Information added by Drupal.org packaging script on 2016-08-16
+version: '8.x-1.0-beta10'
 core: '8.x'
 project: 'thunder'
-datestamp: 1465565342
+datestamp: 1471364942

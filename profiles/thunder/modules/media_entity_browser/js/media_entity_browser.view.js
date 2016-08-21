@@ -1,25 +1,24 @@
 /**
- * @file media_entity_browser.view.js
+ * @file
+ * Defines the behavior of the media entity browser view.
  */
+
 (function ($) {
 
   "use strict";
 
   /**
-   * Registers behaviours related to view widget.
+   * Attaches the behavior of the media entity browser view.
    */
-  Drupal.behaviors.MediaEntityBrowserView = {
-    attach: function (context) {
-      $('.views-row').once('bind-click-event').click(function () {
-        var input = $(this).find('.views-field-entity-browser-select input');
-        input.prop('checked', !input.prop('checked'));
-        if (input.prop('checked')) {
-          $(this).addClass('checked');
-        }
-        else {
-          $(this).removeClass('checked');
-        }
+  Drupal.behaviors.mediaEntityBrowserView = {
+    attach: function (context, settings) {
+      $('.views-row', context).once().click(function () {
+        var $row = $(this);
+        var $input = $row.find('.views-field-entity-browser-select input');
+        $input.prop('checked', !$input.prop('checked'));
+        $row[$input.prop('checked') ? 'addClass' : 'removeClass']('checked');
       });
     }
-  }
+  };
+
 }(jQuery, Drupal));
