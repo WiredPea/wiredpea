@@ -1,4 +1,0 @@
-gallery:
-  version: 1.0
-  js:
-    js/thunder_gallery.js: {}
