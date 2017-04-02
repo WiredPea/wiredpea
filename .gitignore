@@ -1,7 +1,1 @@
-# Ignore configuration files that may contain sensitive information.
-sites/*/settings*.php
-!core/lib/Drupal/Core/Site/Settings.php
-
-# Ignore paths that contain user-generated content.
-sites/*/files
-sites/*/private
+app/config/config_local.yml
