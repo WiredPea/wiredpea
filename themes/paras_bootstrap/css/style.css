@@ -1,0 +1,14 @@
+/**
+ * Place your custom styles here.
+ */
+.paragraph--type--text {
+    padding: 20px 0;
+}
+
+.paragraph--type--text .field--name-field-title {
+    padding-bottom: 10px;
+}
+
+.paragraph--type--banner .field--name-field-image img {
+    width: 100%;
+}
