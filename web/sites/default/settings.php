@@ -653,9 +653,10 @@ if ($settings['hash_salt']) {
  * change events.
  */
 # $config['system.file']['path']['temporary'] = '/tmp';
-# $config['system.site']['name'] = 'My Drupal site';
+$config['system.site']['name'] = 'WiredPea';
 # $config['system.theme']['default'] = 'stark';
 # $config['user.settings']['anonymous'] = 'Visitor';
+$config['system.performance']['css']['preprocess'] = TRUE;
 
 /**
  * Fast 404 pages:
