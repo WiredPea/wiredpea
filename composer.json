@@ -21,6 +21,7 @@
         "drupal-composer/drupal-scaffold": "^2.2",
         "drupal/bootstrap": "^3.7",
         "drupal/bootstrap_layouts": "^5.0",
+        "drupal/config_installer": "^1.5",
         "drupal/console": "^1.0.1",
         "drupal/core": "~8.0",
         "drush/drush": "~8.0|^9.0.0-beta7",
