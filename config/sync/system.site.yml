@@ -1,0 +1,14 @@
+uuid: 2492ba27-fc61-4ee7-bf3f-9ba349474859
+name: WiredPea
+mail: noe@wiredpea.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: AyT9s8OUcclfALRE_imByOMgtZ19eOlqdF6zI3p7yqo
