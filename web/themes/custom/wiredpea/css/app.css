@@ -1,0 +1,8 @@
+.content .field--name-field-paragraph {
+  text-align: justify; }
+
+.content .field--name-field-image {
+  float: none;
+  text-align: center; }
+  .content .field--name-field-image img {
+    max-width: 100%; }
