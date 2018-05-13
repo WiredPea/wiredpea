@@ -14,4 +14,4 @@ body {
   float: none;
   text-align: center; }
   .content .field--name-field-image img {
-    max-width: 100%; }
+    width: 100%; }
