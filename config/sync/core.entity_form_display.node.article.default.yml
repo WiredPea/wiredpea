@@ -3,17 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.article.body
     - field.field.node.article.comment
-    - field.field.node.article.field_image
+    - field.field.node.article.field_content
     - field.field.node.article.field_tags
-    - image.style.thumbnail
     - node.type.article
   module:
     - comment
-    - image
+    - paragraphs
     - path
-    - text
 _core:
   default_config_hash: buc38w3gxCqFnjINJhMiJvPpj9jWflKvlKDyBVMPVvw
 id: node.article.default
@@ -21,15 +18,6 @@ targetEntityType: node
 bundle: article
 mode: default
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 1
-    region: content
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-    third_party_settings: {  }
   comment:
     type: comment_default
     weight: 20
@@ -42,14 +30,18 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_image:
-    type: image_image
-    weight: 4
-    region: content
+  field_content:
+    type: entity_reference_paragraphs
+    weight: 121
     settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
+    region: content
   field_tags:
     type: entity_reference_autocomplete_tags
     weight: 3
@@ -100,4 +92,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
 hidden: {  }

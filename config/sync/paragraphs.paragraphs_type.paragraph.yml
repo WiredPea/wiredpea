@@ -1,0 +1,9 @@
+uuid: 526ae76d-cbf0-469f-9e2d-9142a4e5cc62
+langcode: en
+status: true
+dependencies: {  }
+id: paragraph
+label: paragraph
+icon_uuid: null
+description: 'Just a plain text paragraph.'
+behavior_plugins: {  }

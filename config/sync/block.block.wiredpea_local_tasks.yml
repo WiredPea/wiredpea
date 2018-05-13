@@ -1,0 +1,22 @@
+uuid: 2d494fc2-d7f8-412f-9a92-e1e3437e2a68
+langcode: en
+status: true
+dependencies:
+  theme:
+    - wiredpea
+_core:
+  default_config_hash: qHdtze2DZ2mFfaJadxjZz6epm92_SN9SAFY4yJGl8Fo
+id: wiredpea_local_tasks
+theme: wiredpea
+region: header
+weight: -7
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility: {  }
