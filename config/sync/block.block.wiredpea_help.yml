@@ -1,0 +1,22 @@
+uuid: bf7ac523-afca-40a0-8926-e7eb884864ff
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - wiredpea
+_core:
+  default_config_hash: MhtNdV__HKRTab0ZPjkPNfYL4Ng4UPBucDLoC7Rg5Eo
+id: wiredpea_help
+theme: wiredpea
+region: help
+weight: -7
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }

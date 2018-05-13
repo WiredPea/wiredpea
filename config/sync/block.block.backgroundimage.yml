@@ -1,0 +1,28 @@
+uuid: b7cd2901-6f17-4d5d-bb01-8ab7381f8c73
+langcode: en
+status: true
+dependencies:
+  module:
+    - background_image
+    - ctools
+  theme:
+    - wiredpea
+id: backgroundimage
+theme: wiredpea
+region: background_image
+weight: 0
+provider: null
+plugin: background_image
+settings:
+  id: background_image
+  label: 'Background Image'
+  provider: background_image
+  label_display: ''
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      article: article
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

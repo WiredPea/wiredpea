@@ -1,0 +1,25 @@
+uuid: d0b454c5-2a60-4979-82c3-9cea0137ca73
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - wiredpea
+_core:
+  default_config_hash: Cy3vkpYrD1O5JG-BeEnokF0bByHYDEa8CBfWivB4_SQ
+id: wiredpea_branding
+theme: wiredpea
+region: sidebar_first
+weight: 0
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  provider: system
+  label_display: '0'
+  use_site_logo: true
+  use_site_name: true
+  use_site_slogan: false
+visibility: {  }
