@@ -1,8 +1,0 @@
-name: WiredPea
-type: theme
-base theme: bootstrap
-description: The custom WiredPea theme
-core: 8.x
-
-libraries:
-  - wiredpea/global-css

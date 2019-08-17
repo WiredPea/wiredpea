@@ -1,5 +1,0 @@
-global-css:
-  version: 0.1
-  css:
-    theme:
-      css/app.css: {}
