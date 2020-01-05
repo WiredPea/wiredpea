@@ -9,18 +9,17 @@ set('ssh_multiplexing', true);
 
 set('repository', 'git@bitbucket.org:noesnaterse/wiredpea.git');
 
-add('shared_files', ['sites/default/files']);
-add('shared_dirs', []);
+add('shared_files', ['sites/default/files', 'web/sites/default/settings.php']);
+add('shared_dirs', ['web/sites/default/files']);
 
 add('writable_dirs', []);
 
 // Servers
 
-server('production', 'wiredpea.com')
+host('wiredpea.com')
     ->user('noe')
-    ->identityFile()
-    ->set('deploy_path', '/var/www/wiredpea.com')
-    ->pty(true);
+    ->identityFile('~/.ssh/id_rsa')
+    ->set('deploy_path', '/var/www/wiredpea');
 
 
 // Tasks
@@ -29,7 +28,7 @@ desc('Restart PHP-FPM service');
 task('php-fpm:restart', function () {
     // The user must have rights for restart service
     // /etc/sudoers: username ALL=NOPASSWD:/bin/systemctl restart php7.0-fpm.service
-    run('sudo systemctl restart php7.0-fpm.service');
+    run('sudo systemctl restart php7.2-fpm.service');
 });
 after('deploy:symlink', 'php-fpm:restart');
 
