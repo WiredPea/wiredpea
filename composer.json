@@ -24,6 +24,7 @@
         "drupal/coffee": "^1.0@beta",
         "drupal/console": "^1.0.2",
         "drupal/core": "^8.7.0",
+        "drupal/pathauto": "^1.6",
         "drupal/redirect": "^1.5",
         "drupal/seo_checklist": "^4.1",
         "drush/drush": "^9.0.0",
