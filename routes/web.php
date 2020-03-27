@@ -15,6 +15,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', 'FrontPageController@welcome');
+Route::get('/article/{slug}', 'ArticleController@showarticle');
 
 Route::middleware(ProtectAgainstSpam::class)->group(function() {
     Auth::routes();
