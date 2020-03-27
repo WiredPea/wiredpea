@@ -1,18 +1,18 @@
 <?php
 namespace Deployer;
-require 'recipe/drupal8.php';
+require 'recipe/laravel.php';
 
 // Configuration
 
 set('ssh_type', 'native');
 set('ssh_multiplexing', true);
 
-set('repository', 'git@bitbucket.org:noesnaterse/wiredpea.git');
+set('repository', 'git@github.com:WiredPea/wiredpea.git');
 
-add('shared_files', ['sites/default/files', 'web/sites/default/settings.php']);
-add('shared_dirs', ['web/sites/default/files']);
+add('shared_files', ['.env']);
+add('shared_dirs', ['storage']);
 
-add('writable_dirs', []);
+add('writable_dirs', ['bootstrap/cache', 'storage']);
 
 // Servers
 
@@ -29,8 +29,9 @@ task('php-fpm:restart', function () {
     // /etc/sudoers: username ALL=NOPASSWD:/bin/systemctl restart php7.0-fpm.service
     run('sudo systemctl restart php7.3-fpm.service');
 });
-before('deploy:symlink', 'deploy:vendors');
 after('deploy:symlink', 'php-fpm:restart');
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
+
+before('deploy:symlink', 'artisan:migrate');
