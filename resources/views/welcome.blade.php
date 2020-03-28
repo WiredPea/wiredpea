@@ -1,20 +1,20 @@
 @extends('layouts.public')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Cats</h2>
+    @foreach ($articles as $article)
+        <div class="row">
+            <div class="col-md-8">
+                <h2>{{ $article->title }}</h2>
+            </div>
+            <div class="col-md-4 text-md-right">
+                {{ $article->publishedDate }}
+            </div>
+            <div class="col-md-12">
+                {{ \Illuminate\Support\Str::limit($article->body, 150, $end='...') }}
+            </div>
+            <div class="col-md-12">
+                <a href="#">Read more</a>
+            </div>
         </div>
-        <div class="col-md-12 text-justify">
-            Your pillow is now my pet bed purr while eating i vomit in the bed in the middle of the night but use lap as chair, but kitty time for purr for no reason. Instead of drinking water from the cat bowl, make sure to steal water from the toilet knock dish off table head butt cant eat out of my own dish yet i heard this rumor where the humans are our owners, pfft, what do they know?! for side-eyes your "jerk" other hand while being petted but steal the warm chair right after you get up for human clearly uses close to one life a night no one naps that long so i revive by standing on chestawaken! i want to go outside let me go outside nevermind inside is better. Touch my tail, i shred your hand purrrr chase red laser dot immediately regret falling into bathtub rub whiskers on bare skin act innocent vommit food and eat it again plop down in the middle where everybody walks. Poop on couch Gate keepers of hell for pee in the shoe yet nyan fluffness ahh cucumber! yet ptracy, and shred all toilet paper and spread around the house. I’m so hungry i’m so hungry but ew not for that purr when give birth. Inspect anything brought into the house run at 3am. Litter kitter kitty litty little kitten big roar roar feed me kitty poochy somehow manage to catch a bird but have no idea what to do next, so play with it until it dies of shock and sit on human they not getting up ever. Intently sniff hand humans,humans, humans oh how much they love us felines we are the center of attention they feed, they clean gnaw the corn cob yet cat snacks. Lick arm hair. Cat milk copy park pee walk owner escape bored tired cage droppings sick vet vomit show belly. Kitten is playing with dead mouse plop down in the middle where everybody walks but sit in a box for hours, and weigh eight pounds but take up a full-size bed for and sometimes switches in french and say "miaou" just because well why not yet cats go for world domination. Cat meoooow i iz master of hoomaan, not hoomaan master of i, oooh damn dat dog need to check on human, have not seen in an hour might be dead oh look, human is alive, hiss at human, feed me for eat and than sleep on your face, climb a tree, wait for a fireman jump to fireman then scratch his face. X plan your travel and pee in the shoe, or let me in let me out let me in let me out let me in let me out who broke this door anyway find a way to fit in tiny box. Purr when being pet toy mouse squeak roll over found somthing move i bite it tail yet i shredded your linens for you. Groom forever, stretch tongue and leave it slightly out, blep warm up laptop with butt lick butt fart rainbows until owner yells pee in litter box hiss at cats for soft kitty warm kitty little ball of furr mouse but lick the plastic bag yet try to jump onto window and fall while scratching at wall. Crash against wall but walk away like nothing happened pose purrfectly to show my beauty. Refuse to leave cardboard box drool meoooow but eats owners hair then claws head attack like a vicious monster so destroy the blinds. Leave dead animals as gifts purr when give birth lick the curtain just to be annoying put butt in owner's face peer out window, chatter at birds, lure them to mouth slap owner's face at 5am until human fills food dish. Chew the plant hopped up on catnip bleghbleghvomit my furball really tie the room together or do i like standing on litter cuz i sits when i have spaces, my cat buddies have no litter i live in luxury cat life my slave human didn't give me any food so i pooped on the floor yet woops poop hanging from butt must get rid run run around house drag poop on floor maybe it comes off woops left brown marks on floor human slave clean lick butt now.
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Bacon</h2>
-        </div>
-        <div class="col-md-12 text-justify">
-            Bacon ipsum dolor amet beef ribs tail turkey cupim, short ribs sirloin boudin pork loin ball tip strip steak prosciutto brisket filet mignon pig. Salami boudin beef ribs bacon leberkas, ham cupim beef ham hock short ribs drumstick. Pork belly capicola flank leberkas, short ribs corned beef boudin. Buffalo cow tongue, ham hock boudin kielbasa pork belly chislic bacon. Corned beef porchetta meatloaf pork chop. Short loin ground round salami, tongue leberkas shoulder picanha tail ribeye turducken.
-        </div>
-    </div>
+    @endforeach
 @endsection
