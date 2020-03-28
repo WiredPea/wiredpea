@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckWriter;
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
 
@@ -22,3 +23,11 @@ Route::middleware(ProtectAgainstSpam::class)->group(function() {
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'dashboard' ], function() {
+    Route::get('/', 'DashboardController@index')->name('dashboard');
+
+    Route::middleware(CheckWriter::class)->group(function() {
+        Route::resource('article', ArticleController::class);
+    });
+});
