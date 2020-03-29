@@ -5,7 +5,7 @@
         <div class="row">
             <h1 class="col-md-11">Articles</h1>
             <div class="col-md-1">
-                <a href="{{ route('article.create') }}"><i class="fab fa-plus-square">Add</i></a>
+                <a href="{{ route('article.create') }}"><i class="fad fa-plus-square"></i></a>
             </div>
         </div>
         <table class="table">
