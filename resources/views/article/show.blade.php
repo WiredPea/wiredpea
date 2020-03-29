@@ -6,7 +6,7 @@
             <h1 class="col-md-12">{{ $article->title }}</h1>
         </div>
         <div class="row">
-            <div class="col-md-12">{{ $article->body }}</div>
+            <div class="col-md-12">@markdown($article->body)</div>
         </div>
     </div>
 @endsection
