@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use Facade\FlareClient\Http\Exceptions\NotFound;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -117,7 +119,7 @@ class ArticleController extends Controller
 
     public function showArticle(string $slug)
     {
-        $article = Article::where('slug', '=', $slug)->first();
+        $article = Article::where('slug', '=', $slug)->firstOrFail();
 
         return $this->show($article);
     }
