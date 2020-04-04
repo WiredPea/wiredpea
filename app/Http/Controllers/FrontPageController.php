@@ -9,7 +9,7 @@ class FrontPageController extends Controller
 {
     function welcome() {
         $articles = Article::where('published', '=', '1')
-            ->orderBy('publishedDate')
+            ->orderBy('publishedDate', 'desc')
             ->limit(25)
             ->get();
 
