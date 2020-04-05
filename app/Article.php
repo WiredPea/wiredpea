@@ -19,4 +19,18 @@ class Article extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function addTag(Tag $tag) {
+        $this->tags()->attach($tag);
+    }
+
+    public function removeTag(Tag $tag)
+    {
+        $this->tags()->detach($tag);
+    }
 }
