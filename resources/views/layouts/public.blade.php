@@ -16,41 +16,49 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic">
 
     <!-- Styles -->
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <div class="container">
-            <div class="col-md-3">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ url('/img/wiredpea.png') }}" alt="WiredPea" />
-                </a>
-            </div>
-            <div class="col-md-7 text-md-center">
-{{--                <a href="#">Products</a>--}}
-{{--                <a href="#">About</a>--}}
-            </div>
-            <div class="col-md-2 text-right">
-                <a href="https://twitter.com/wiredpea" target="_blank"><i class="fab fa-twitter-square"></i></a>
-                <a href="https://facebook.com/wiredpea" target="_blank"><i class="fab fa-facebook-square"></i></a>
-                <a href="https://instagram.com/wiredpea/" target="_blank"><i class="fab fa-instagram-square"></i></a>
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="/"><img src="{{ url('/img/wiredpea.png') }}" alt="WiredPea" /></a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+            <div
+                class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/">Home</a></li>
+{{--                    <li class="nav-item" role="presentation"><a class="nav-link" href="/about.html">About us</a></li>--}}
+{{--                    <li class="nav-item" role="presentation"><a class="nav-link" href="/contact.html">Contact us</a></li>--}}
+{{--                    <li class="nav-item" role="presentation"><a class="nav-link" href="/post.html">Blog Post</a></li>--}}
+                </ul>
             </div>
         </div>
     </nav>
-    <div id="app">
-        <main class="container">
-            @yield('content')
-        </main>
-    </div>
-    <footer class="container">
-        <div class="row">
-            <div class="col-md-2">
-{{--                Copyright &copy; 2020--}}
+
+    @yield('header')
+
+    @yield('content')
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><a href="https://twitter.com/wiredpea" target="_blank"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></a></span></li>
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><a href="https://facebook.com/wiredpea" target="_blank"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse"></i></a></span></li>
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><a href="https://instagram.com/wiredpea/" target="_blank"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-instagram fa-stack-1x fa-inverse"></i></a></span></li>
+                        <li class="list-inline-item"><span class="fa-stack fa-lg"><a href="https://github.com/WiredPea/" target="_blank"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></a></span></li>
+                    </ul>
+                    <p class="text-muted copyright">Copyright&nbsp;©&nbsp;WiredPea 2020</p>
+                </div>
             </div>
         </div>
     </footer>
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3550192-1"></script>
     <script>
