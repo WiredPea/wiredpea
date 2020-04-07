@@ -43,7 +43,6 @@ rules:
     justification:
       - If you update some of the packages.
     glob: "package-lock.json"
-
 # You can import rules.
 # import:
 #   - https://example.com/example-rules.yml
