@@ -1,6 +1,6 @@
 @extends('layouts.public')
 @section('header')
-    <header class="masthead" style="background-image:url('/img/{{ $article->background }}');">
+    <header class="masthead" style="background-image:url({{ asset('images/headers/' . $article->header_id . '.jpg') }});">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">

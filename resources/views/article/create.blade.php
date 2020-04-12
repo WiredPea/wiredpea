@@ -3,11 +3,15 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <h1 class="col-md-12">Create</h1>
+            <h1 class="col-md-12">Create article</h1>
         </div>
         <form action="{{ route('article.store') }}" method="post">
             @csrf
             @honeypot
+            <div class="form-group">
+                <label for="headerId">File id</label>
+                <input type="number" class="form-control" id="headerId" name="headerId">
+            </div>
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" class="form-control" id="title" name="title" aria-describedby="titleHelp">

@@ -29,5 +29,6 @@ Route::group(['prefix' => 'dashboard' ], function() {
 
     Route::middleware(CheckWriter::class)->group(function() {
         Route::resource('article', ArticleController::class);
+        Route::resource('headers', HeaderController::class);
     });
 });

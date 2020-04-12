@@ -15,6 +15,10 @@
                 <small id="titleHelp" class="form-text text-muted">The title of the post.</small>
             </div>
             <div class="form-group">
+                <label for="headerId">File id</label>
+                <input type="number" class="form-control" id="headerId" name="headerId" value="{{ $article->header_id }}">
+            </div>
+            <div class="form-group">
                 <label for="body">Body</label>
                 <textarea class="form-control" id="body" name="body" aria-describedby="bodyHelp">{{ $article->body }}</textarea>
                 <small id="bodyHelp" class="form-text text-muted">The content of the article goes here</small>

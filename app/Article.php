@@ -33,4 +33,9 @@ class Article extends Model
     {
         $this->tags()->detach($tag);
     }
+
+    public function header()
+    {
+        $this->hasOne(Header::class);
+    }
 }

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Header;
 use Facade\FlareClient\Http\Exceptions\NotFound;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -51,10 +53,12 @@ class ArticleController extends Controller
             'author_id' => Auth::user()->id,
             'publishedDate' => Date::now(),
         ]);
-
+        if ($request->post('headerId')) {
+            $article->header_id = $request->post('headerId');
+        }
         $article->save();
 
-        return redirect()->route('article.index');
+        return redirect()->route('article.index')->with('message', 'Article saved');
     }
 
     /**
@@ -101,6 +105,9 @@ class ArticleController extends Controller
             $article->published = 0;
         };
         $article->publishedDate = $request->post('publishedDate');
+        if ($request->post('headerId')) {
+            $article->header_id = $request->post('headerId');
+        }
         $article->save();
 
         return redirect()->route('article.index');
