@@ -8,7 +8,7 @@
                     <div class="post-heading">
                         <h1>{{ $article->title }}</h1>
                         @if ($article->subtitle )
-                            <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
+                            <h2 class="subheading">{{ $article->subtitle }}</h2>
                         @endif
                 </div>
             </div>

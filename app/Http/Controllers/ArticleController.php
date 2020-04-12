@@ -47,6 +47,7 @@ class ArticleController extends Controller
     {
         $article = new Article([
             'title' => $request->post('title'),
+            'subtitle' => $request->post('subTitle'),
             'slug' => Str::of($request->post('title'))->slug('-'),
             'body' => $request->post('body'),
             'published' => $request->post('published') == 1 ? 1 : 0,
@@ -97,7 +98,8 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $article->title = $request->post('title');
-        $article->slug = Str::of($request->post('title'))->slug('-');
+        $article->subtitle = $request->post('subTitle');
+//        $article->slug = Str::of($request->post('title'))->slug('-');
         $article->body = $request->post('body');
         if ($request->post('published') == 1) {
             $article->published = 1;
