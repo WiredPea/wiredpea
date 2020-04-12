@@ -25,7 +25,8 @@ class Article extends Model
         return $this->belongsToMany(Tag::class);
     }
 
-    public function addTag(Tag $tag) {
+    public function addTag(Tag $tag)
+    {
         $this->tags()->attach($tag);
     }
 

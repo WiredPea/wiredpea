@@ -51,7 +51,7 @@ class HeaderController extends Controller
         if ($request->hasFile('headerImage') &&
             $request->file('headerImage')->isValid() &&
             $request->file('headerImage')->extension() === 'jpeg') {
-                $request->file('headerImage')->storeAs(
+            $request->file('headerImage')->storeAs(
                     'images/headers',
                     $header->id . '.jpg'
                 );

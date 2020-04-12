@@ -18,16 +18,16 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 Route::get('/', 'FrontPageController@welcome');
 Route::get('/article/{slug}', 'ArticleController@showarticle');
 
-Route::middleware(ProtectAgainstSpam::class)->group(function() {
+Route::middleware(ProtectAgainstSpam::class)->group(function () {
     Auth::routes();
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'dashboard' ], function() {
+Route::group(['prefix' => 'dashboard' ], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
-    Route::middleware(CheckWriter::class)->group(function() {
+    Route::middleware(CheckWriter::class)->group(function () {
         Route::resource('article', ArticleController::class);
         Route::resource('headers', HeaderController::class);
     });
