@@ -18,6 +18,11 @@
                 <small id="titleHelp" class="form-text text-muted">The title of the post.</small>
             </div>
             <div class="form-group">
+                <label for="subTitle">Subtitle</label>
+                <input type="text" class="form-control" id="subTitle" name="subTitle" aria-describedby="subTitleHelp">
+                <small id="subTitleHelp" class="form-text text-muted">The subtitle of the post.</small>
+            </div>
+            <div class="form-group">
                 <label for="body">Body</label>
                 <textarea class="form-control" id="body" name="body" aria-describedby="bodyHelp"></textarea>
                 <small id="bodyHelp" class="form-text text-muted">The content of the article goes here</small>

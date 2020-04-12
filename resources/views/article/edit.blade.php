@@ -15,6 +15,11 @@
                 <small id="titleHelp" class="form-text text-muted">The title of the post.</small>
             </div>
             <div class="form-group">
+                <label for="subTitle">Subtitle</label>
+                <input type="text" class="form-control" id="subTitle" name="subTitle" aria-describedby="subTitleHelp" value="{{ $article->subtitle }}">
+                <small id="subTitleHelp" class="form-text text-muted">The subtitle of the post.</small>
+            </div>
+            <div class="form-group">
                 <label for="headerId">File id</label>
                 <input type="number" class="form-control" id="headerId" name="headerId" value="{{ $article->header_id }}">
             </div>
