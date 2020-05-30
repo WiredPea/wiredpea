@@ -17,6 +17,7 @@
     "require": {
         "composer/installers": "^1.2",
         "drupal/bfd": "^2.29",
+        "drupal/bootstrap_barrio": "^4.28",
         "drupal/coffee": "^1.0",
         "drupal/contentanalysis": "1.x-dev",
         "drupal/core-composer-scaffold": "^8.8",
