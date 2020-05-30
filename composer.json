@@ -23,6 +23,7 @@
         "drupal/core-project-message": "^8.8",
         "drupal/core-recommended": "^8.8",
         "drupal/pathauto": "^1.8",
+        "drupal/redirect": "^1.6",
         "drupal/seo_checklist": "^4.1"
     },
     "conflict": {
