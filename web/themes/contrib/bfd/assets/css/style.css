@@ -15871,7 +15871,6 @@ article.node .node__meta .profile img {
   border-radius: 50%;
   max-width: 100%;
   height: 35px;
-  border: 1px solid #adb5bd;
   width: auto;
   margin: 0 10px 0 0;
 }
@@ -17243,14 +17242,18 @@ footer .region-footer-left .block ul li:before {
   margin-left: -40px;
 }
 
+#page-footer-sub a[href="https://www.drupal.org"]:hover {
+  color: #7cbc48;
+}
+
 #page-footer-sub a[href="https://www.drupal.org"]:after {
   content: '';
   display: inline-block;
   width: 30px;
   height: 35px;
   margin-left: .75rem;
-  -webkit-mask: url("../icon/logo-drupal-8.svg");
-  mask: url("../icon/logo-drupal-8.svg");
+  -webkit-mask: url("../icon/logo-drupal.svg");
+  mask: url("../icon/logo-drupal.svg");
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -17265,7 +17268,7 @@ footer .region-footer-left .block ul li:before {
 }
 
 #page-footer-sub a[href="https://www.drupal.org"]:hover:after {
-  background-color: #d9d9d9;
+  background-color: #7cbc48;
 }
 
 @supports (-ms-ime-align: auto) {
@@ -18020,12 +18023,15 @@ ol.breadcrumb .breadcrumb-item {
 /* ---------------------------------------------------------------------------*/
 .field--name-user-picture img {
   border-radius: 50%;
-  border: 1px solid #adb5bd;
 }
 
 /* ---------------------------------------------------------------------------*/
-/* MOBILE FIRST - page/_page-home.scss                                      */
+/* MOBILE FIRST - page/_page-frontpage.scss                                      */
 /* ---------------------------------------------------------------------------*/
+.path-frontpage article.node--sticky img.image-style-wide {
+  border: 5px solid #ffc107;
+}
+
 .path-frontpage article.node > h2 {
   margin-top: .5rem;
 }

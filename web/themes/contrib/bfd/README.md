@@ -5,6 +5,7 @@ CONTENTS OF THIS FILE
 ============
 
  * INTRODUCTION
+ * DRUPAL 9
  * NOTES
  * FEATURES
  * INSTALLATION
@@ -12,8 +13,9 @@ CONTENTS OF THIS FILE
  * CREATE CONTENT
  * BETTER ADMINISTRATION EXPERIENCE
  * SUGGESTED MODULES
+ * CUSTOMIZING
  * FOR DEVELOPERS
- * FUTUR DEVELOPMENTS
+ * DISTRIBUTION
  * REQUIREMENTS
 
 INTRODUCTION
@@ -37,15 +39,14 @@ This theme is created by [OCTOGONE.DEV](http://www.octogone.dev)
 
 [![Demo](assets/image/readme/demo-button.png)][7]
 
+## DRUPAL 9
+  This theme is available for Drupal 9
+
 ## SCREENSHOT
 ![Desktop](assets/image/readme/bootstrap-for-drupal-desktop-screenshot.jpg "screnshot")
 
 NOTES
 ======
-
-**To avoid error screen : Before updating from 8.x-1.x to 8.x-2.x., create an
-image style named "wide" (600x200, scale and crop). Or Uninstall the theme,
-update it and reinstall it - but that way you will have to replace blocks.**
 
 * Windows Edge V18 is not supported (it does not support **mask** CSS
   properties), only Edge +V79 is supported;
@@ -153,9 +154,6 @@ installation and the website is immediately usable. You only have to create
    where it is displayed in the block settings, DO NOT display the title of the
    block. Finally, copy the **modal button code** in the corresponding page.
 
-## ERROR 403 & 404 PAGE
-Find the HTML code for those page in the HTML folder.
-
 ## VIEW CONTENT HITS
 To display the view counter on the public website, you have to activate the
 **core** module statistics at `/admin/modules` and grant permission to
@@ -191,9 +189,10 @@ one or both of the admin bars are active, in desktop or mobile screen.	Go to
 choose Adminimal.
 
 In **ressources/css** there is a **adminimal-custom.css** that match the
-color scheme of this theme. To use it copy it in **files** folder and tick
-"Use adminimal-custom.css" in `/admin/appearance/settings/adminimal_theme`.
-This is a native feature of the Adminimal theme.
+color scheme of this theme. To use it copy it in **sites/default/files** folder
+and tick "Use adminimal-custom.css" in
+`/admin/appearance/settings/adminimal_theme`. This is a native feature of
+the Adminimal theme.
 
 **List of modules to install:**
 
@@ -277,19 +276,57 @@ be used when the image is cropped or cropped and scaled.
 [allowed_formats](https://www.drupal.org/project/allowed_formats) allow to
 remove the **text formats guidelines** below the forms.
 
+CUSTOMIZING
+======
+
+In this theme there is tools for you to customize this theme with and
+whitout subtheme. Note that this theme is designed to be stylized with SCSS,
+but there is a custom CSS available.
+
+## WITH SUBTHEME
+Copy the `ressources/bfd_subtheme` folder to `/sites/themes/custom` folder and
+set it as `default theme`. Drupal.org provide
+[documentation about sub-themes][10] and how to customize it.
+
+### CSS
+To use a custom CSS go to the theme settings in
+`/admin/appearance/settings/bootstrap_for_drupal_subtheme` Tick
+"Use bfd-custom.css". That setting will create a "bfd-custom.css" in `files`
+folder that you can use to customize the theme.
+
+### SCSS
+You can theme directly with the file `bfd_subtheme/assets/scss/base/_base.scss`
+and add SCSS files to the master SCSS file
+`bfd_subtheme/assets/scss/tools/_subtheme.scss`. Gulp file is provided to
+compile SCSS but you will have to install node.js modules.
+
+#### Note
+If you are using a multisites Drupal instance you have to copy the
+"Bootstrap for drupal" base theme to your site specific folder `/themes/contrib`
+or change the relative path in the SCSS master file -
+`bfd_subtheme/assets/scss/style.scss`.
+
+## WITHOUT SUBTHEME
+
+### CSS
+To use a custom CSS go to the theme settings in
+`/admin/appearance/settings/bootstrap_for_drupal` Tick "Use bfd-custom.css".
+That setting will create a "bfd-custom.css" in `files` folder that you can use
+to customize the theme.
+
+### SCSS
+In the theme, there is a SCSS template folder for you to add your custom CSS
+without subtheme. Find in `assets/scss/tools` a `custom` folder, copy it to
+`assets/scss/` and in the bottom of the file `assets/scss/style.scss`
+uncomment the line `@import 'custom/include`. **After updating the theme**
+dont forget to uncomment that line again. Gulp file is provided to
+compile SCSS but you will have to install node.js modules.
+
 FOR DEVELOPERS
 ============
 
  * All SCSS files are provided
  * Custom bootstrap variables overwrite SCSS file
-
-## CUSTOM SCSS
-There is a SCSS template for you to add your custom CSS easily. Find in
-`assets/scss/tools` a `custom` folder, copy it to `assets/scss/`
-and in the bottom of the file `assets/scss/style.scss` uncomment the line
-`@import 'custom/include'`. **After updating the theme dont forget to
-uncomment that line again**.
-
  * Only SVG icons with mask attribute are used, allowing for:
    color/size/position/transition with CSS. Note that **mask** CSS
    properties are not supported by Edge V18. No use of icon frameworks
@@ -303,25 +340,19 @@ uncomment that line again**.
    of bootstrap classes.
 
   List of Bootstrap components integrated  :
-  * status message
-  * pager
-  * breadcrumbs
-  * tooltips, popover, modal, carousel (check javascript for target)
-  * form (custom style) : submit, input, checkbox, select, radio, textfield
+  * status message;
+  * pager;
+  * breadcrumbs;
+  * tooltips, popover, modal, carousel (check javascript for target);
+  * form (custom style) : submit, input, checkbox, select, radio, textfield.
 
-FUTUR DEVELOPEMENT
+DISTRIBUTION
 ============
-
-* Multi-color / font combinations in the theme configuration with one click
-(in same layout).
-* Drupal 9 porting.
-
-## DISTRIBUTION
 A payed distribution will be soon available with a editing system that
 integrate the powerfull **paragraph** and **entity browser** component:
 full spectrum of content and multimedia content can be added with a couple
 of clicks in the edit form. Javascript features . Development is currently
-**ongoing**, link to distribution will be available soon.</p>
+**ongoing**, link to distribution will be available soon.
 
 ### Features
 * Complete list of HTML typography tags stylized in a template page
@@ -342,16 +373,15 @@ of clicks in the edit form. Javascript features . Development is currently
   - Edit form: Paragraph **content components** allowing embed of content
   (BS4 card display) into the content type.  Browsing via entity browser
   - Edit form: Paragraph **social media components** allowing embed of
-  twitter, facebook, instagram.
+  twitter, facebook, instagram mixed in a masonry style.
   - Edit form: Paragraph **document components** Browsing via entity browser
+  - Edit form: Paragraph **Link components** with custom thumbnails and
+  description
   - Edit form: Paragraph **HTML table components** allowing  building of
   advanced tables
 * Mailchimp integration
 * Notification system
 * Pre-configured roles
-
-REQUIREMENTS
-======
 
 No requirements.
 
@@ -364,3 +394,4 @@ No requirements.
 [7]:https://bootstrap-for-drupal.octogone.dev/
 [8]:https://www.buymeacoffee.com/octogonedev
 [9]:https://getbootstrap.com/
+[10]:https://www.drupal.org/docs/theming-drupal/creating-sub-themes
