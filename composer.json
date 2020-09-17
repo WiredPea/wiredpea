@@ -16,6 +16,7 @@
     ],
     "require": {
         "composer/installers": "^1.2",
+        "drupal/antibot": "^1.4",
         "drupal/bfd": "^2.29",
         "drupal/bootstrap_barrio": "^4.28",
         "drupal/bootstrap_paragraphs": "^2.0@beta",
