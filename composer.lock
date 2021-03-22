@@ -920,17 +920,17 @@
         },
         {
             "name": "drupal/coffee",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/coffee.git",
-                "reference": "8.x-1.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/coffee-8.x-1.0.zip",
-                "reference": "8.x-1.0",
-                "shasum": "55ae2303a5a125fb1b6a2d2c32ef41c05c905e8a"
+                "url": "https://ftp.drupal.org/files/projects/coffee-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "8b4314bc826a1b86e8272a6b3d0766ba5bf465b1"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -938,8 +938,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0",
-                    "datestamp": "1586890651",
+                    "version": "8.x-1.1",
+                    "datestamp": "1616167409",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -1527,17 +1527,17 @@
         },
         {
             "name": "drupal/entity_reference_revisions",
-            "version": "1.8.0",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_reference_revisions.git",
-                "reference": "8.x-1.8"
+                "reference": "8.x-1.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_reference_revisions-8.x-1.8.zip",
-                "reference": "8.x-1.8",
-                "shasum": "c1279e6c683edc2dbccedba8de1505340c8a62b6"
+                "url": "https://ftp.drupal.org/files/projects/entity_reference_revisions-8.x-1.9.zip",
+                "reference": "8.x-1.9",
+                "shasum": "e1c51bdea495eb3b458130d6f0a00c347f5637df"
             },
             "require": {
                 "drupal/core": "^8.7.7 || ^9"
@@ -1548,8 +1548,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1583961846",
+                    "version": "8.x-1.9",
+                    "datestamp": "1614805871",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -1558,7 +1558,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -1586,17 +1586,17 @@
         },
         {
             "name": "drupal/extlink",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/extlink.git",
-                "reference": "8.x-1.5"
+                "reference": "8.x-1.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/extlink-8.x-1.5.zip",
-                "reference": "8.x-1.5",
-                "shasum": "5a2b74d12ff9e9257a0566cca8dac3872da64970"
+                "url": "https://ftp.drupal.org/files/projects/extlink-8.x-1.6.zip",
+                "reference": "8.x-1.6",
+                "shasum": "92c2794b1d5ece7978f5f6fa37f719c0b37d470e"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -1604,8 +1604,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.5",
-                    "datestamp": "1601382185",
+                    "version": "8.x-1.6",
+                    "datestamp": "1614961993",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -1646,17 +1646,17 @@
         },
         {
             "name": "drupal/fontawesome",
-            "version": "2.17.0",
+            "version": "2.18.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/fontawesome.git",
-                "reference": "8.x-2.17"
+                "reference": "8.x-2.18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/fontawesome-8.x-2.17.zip",
-                "reference": "8.x-2.17",
-                "shasum": "ee077ae8295a36d76e85131e975a3626e199c404"
+                "url": "https://ftp.drupal.org/files/projects/fontawesome-8.x-2.18.zip",
+                "reference": "8.x-2.18",
+                "shasum": "6154b2dd86622cec3a2eac006dcb66a1def9a24a"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -1664,8 +1664,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.17",
-                    "datestamp": "1593708087",
+                    "version": "8.x-2.18",
+                    "datestamp": "1614784477",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -1702,7 +1702,8 @@
             "description": "The web's most popular icon set and toolkit.",
             "homepage": "https://www.drupal.org/project/fontawesome",
             "support": {
-                "source": "https://git.drupalcode.org/project/fontawesome"
+                "source": "https://git.drupalcode.org/project/fontawesome",
+                "issues": "https://drupal.org/project/issues/fontawesome"
             }
         },
         {
@@ -1840,23 +1841,24 @@
         },
         {
             "name": "drupal/metatag",
-            "version": "1.15.0",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/metatag.git",
-                "reference": "8.x-1.15"
+                "reference": "8.x-1.16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/metatag-8.x-1.15.zip",
-                "reference": "8.x-1.15",
-                "shasum": "7658d7286fdc075ea72a6ec36aea737b1182b5d8"
+                "url": "https://ftp.drupal.org/files/projects/metatag-8.x-1.16.zip",
+                "reference": "8.x-1.16",
+                "shasum": "1c0028f4ff4583dc6601035657dd631c351b290c"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
                 "drupal/token": "^1.0"
             },
             "require-dev": {
+                "drupal/devel": "^4.0",
                 "drupal/metatag_dc": "*",
                 "drupal/metatag_open_graph": "*",
                 "drupal/page_manager": "4.x-dev",
@@ -1866,8 +1868,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.15",
-                    "datestamp": "1607188979",
+                    "version": "8.x-1.16",
+                    "datestamp": "1615820867",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
