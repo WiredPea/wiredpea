@@ -33,7 +33,8 @@
         "drupal/pathauto": "^1.8",
         "drupal/redirect": "^1.6",
         "drupal/seo_checklist": "^5.0",
-        "drupal/xmlsitemap": "^1.0"
+        "drupal/xmlsitemap": "^1.0",
+        "drupal/yoast_seo": "^1.7"
     },
     "conflict": {
         "drupal/drupal": "*"
