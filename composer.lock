@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "720537d894fde4ed421d929352e19d43",
+    "content-hash": "c3282f6b83bd6daf87891e6c2e72863f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2158,27 +2158,27 @@
         },
         {
             "name": "drupal/seo_checklist",
-            "version": "4.1.0",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/seo_checklist.git",
-                "reference": "8.x-4.1"
+                "reference": "5.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/seo_checklist-8.x-4.1.zip",
-                "reference": "8.x-4.1",
-                "shasum": "b290b4a681b37ffc5785e75c0125b983e379158a"
+                "url": "https://ftp.drupal.org/files/projects/seo_checklist-5.0.0.zip",
+                "reference": "5.0.0",
+                "shasum": "b4ce6887bb12b5b973a25468453364ae63347eb1"
             },
             "require": {
-                "drupal/checklistapi": "*",
-                "drupal/core": "~8.0"
+                "drupal/checklistapi": "^2.0",
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-4.1",
-                    "datestamp": "1512797885",
+                    "version": "5.0.0",
+                    "datestamp": "1621000992",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2187,7 +2187,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
